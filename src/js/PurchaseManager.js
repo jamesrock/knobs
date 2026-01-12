@@ -1,11 +1,9 @@
 import { NativePurchases, PURCHASE_TYPE } from '@capgo/native-purchases';
 
 class PurchaseManager {
-  // In-app product (one-time purchase)
-  premiumProductId = 'com.yourapp.premium_features';
-  // Subscription products (require planIdentifier on Android)
-  monthlySubId = 'com.yourapp.premium.monthly';
-  yearlySubId = 'com.yourapp.premium.yearly';
+  premiumProductId = 'me.jamesrock.knobs.pro';
+  monthlySubId = 'me.jamesrock.knobs.monthly';
+  yearlySubId = 'me.jamesrock.knobs.yearly';
 
   async initializeStore() {
     try {
@@ -190,9 +188,6 @@ export const purchaseManager = new PurchaseManager();
 // Initialize when app starts
 purchaseManager.initializeStore();
 
-// purchaseManager.purchaseYearlySubscription();
 // purchaseManager.purchaseInAppProduct();
-// purchaseManager.purchaseMonthlySubscription();
 // purchaseManager.restorePurchases();
 // purchaseManager.openSubscriptionManagement();
-
