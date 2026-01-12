@@ -111,16 +111,7 @@ class Store {
       console.log('Failed to restore purchases');
     };
   };
-
-  async openSubscriptionManagement() {
-    try {
-      await NativePurchases.manageSubscriptions();
-      console.log('Opened subscription management page');
-    }
-    catch (error) {
-      console.log('Failed to open subscription management');
-    };
-  };
+  
 };
 
 export const store = new Store();

@@ -87,7 +87,6 @@ body {
   justify-content: center;
   box-sizing: border-box;
   height: 100dvh;
-  transition: background-color 500ms ease-out;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -112,39 +111,6 @@ h3 {
   font-weight: 800;
 }
 
-.solved {
-  background-color: var(--glass);
-  backdrop-filter: blur(2px);
-  position: absolute;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  transition: opacity .25s;
-  h3 {
-    font-size: 3em;
-    line-height: 1;
-    margin-bottom: 10px;
-  }
-  h2 {
-    font-size: 2em;
-    line-height: 1;
-  }
-  .time {
-    font-size: 22px;
-  }
-  .continue {
-    font-weight: 500;
-    font-size: 20px;
-    padding-top: 30px;
-  }
-  &[data-state="disabled"] {
-    display: none;
-  }
-}
-
 select,
 input,
 textarea {
@@ -155,17 +121,70 @@ input {
   width: 80px;
 }
 
-.builder {
-  position: relative;
-  margin-bottom: 40px;
-}
-
 textarea {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   border: 0;
+}
+
+button {
+  border: 0;
+  background-color: fuchsia;
+  color: white;
+  font-family: inherit;
+  padding: 8px 25px;
+  border-radius: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  font-size: 20px;
+
+  &.close {
+    background-color: transparent;
+    color: inherit;
+    font-weight: 700;
+    opacity: 0.8;
+    padding: 8px 15px;
+  }
+
+  &.point {
+    background-color: deepskyblue;
+    border: 0;
+    color: white;
+    font-size: 20px;
+    border-radius: 100%;
+    position: absolute;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+
+    &:hover,
+    &.logged {
+      background-color: maroon;
+    }
+  }
+
+  &.pos {
+    background-color: transparent;
+    border: 0;
+    position: absolute;
+    font-size: 40px;
+
+    &:hover {
+      background-color: yellow;
+    }
+  }
+
+  &.star {
+    background-color: red;
+  }
+
+  &.restore {
+    font-size: 16px;
+    opacity: 0.25;
+  }
+
 }
 
 .inputs {
@@ -191,7 +210,6 @@ textarea {
   }
 
   &[data-animation="bounce"] {
-    // transition: all .5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
     transition: all .5s cubic-bezier(0.34, 1.56, 0.64, 1);;
   }
 
@@ -286,6 +304,26 @@ textarea {
     gap: 10px;
   }
 
+  .stats {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 800;
+    opacity: 0.4;
+    line-height: 1.2;
+  }
+
+  &-foot {
+    position: absolute;
+    bottom: 40px;
+    left: 20px;
+    right: 20px;
+    font-size: 16px;
+    text-align: center;
+    display: none;
+  }
+
 }
 
 .play-screen,
@@ -306,71 +344,8 @@ textarea {
   
 }
 
-button {
-  border: 0;
-  background-color: fuchsia;
-  color: white;
-  font-family: inherit;
-  padding: 8px 25px;
-  border-radius: 10px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  font-size: 22px;
-
-  &.close {
-    background-color: transparent;
-    color: inherit;
-    font-weight: 700;
-    opacity: 0.8;
-    padding: 8px 15px;
-  }
-
-  &.point {
-    background-color: deepskyblue;
-    border: 0;
-    color: white;
-    font-size: 20px;
-    border-radius: 100%;
-    position: absolute;
-    font-weight: bold;
-    width: 40px;
-    height: 40px;
-
-    &:hover,
-    &.logged {
-      background-color: maroon;
-    }
-  }
-
-  &.pos {
-    background-color: transparent;
-    border: 0;
-    position: absolute;
-    font-size: 40px;
-
-    &:hover {
-      background-color: yellow;
-    }
-  }
-
-  &.star {
-    background-color: red;
-  }
-
-}
-
 .tutorial-screen {
   padding-bottom: 150px;
-}
-
-.stats {
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  font-weight: 800;
-  opacity: 0.4;
-  line-height: 1.2;
 }
 
 .prompt {
@@ -423,6 +398,49 @@ button {
     }
   }
 
+}
+
+.solved {
+  background-color: var(--glass);
+  backdrop-filter: blur(2px);
+  position: absolute;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: opacity .25s;
+
+  h3 {
+    font-size: 3em;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 2em;
+    line-height: 1;
+  }
+
+  .time {
+    font-size: 22px;
+  }
+
+  .continue {
+    font-weight: 500;
+    font-size: 20px;
+    padding-top: 30px;
+  }
+
+  &[data-state="disabled"] {
+    display: none;
+  }
+}
+
+.builder {
+  position: relative;
+  margin-bottom: 40px;
 }
 
 .checker-screen {
