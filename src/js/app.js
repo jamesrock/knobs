@@ -12,6 +12,7 @@ const setStats = window.resetStats = () => {
     game: 0,
     best: 0
   });
+  storage.set('pro', false);
 };
 
 if(!stats) {

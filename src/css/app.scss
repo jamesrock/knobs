@@ -144,43 +144,6 @@ h3 {
   }
 }
 
-button {
-  cursor: pointer;
-  transition: background-color .25s;
-  font-size: inherit;
-  -webkit-tap-highlight-color: transparent;
-}
-
-button.point {
-  background-color: deepskyblue;
-  border: 0;
-  color: white;
-  font-size: 20px;
-  border-radius: 100%;
-  position: absolute;
-  font-weight: bold;
-  width: 40px;
-  height: 40px;
-  &:hover,
-  &.logged {
-    background-color: maroon;
-  }
-}
-
-button.pos {
-  background-color: transparent;
-  border: 0;
-  position: absolute;
-  font-size: 40px;
-  &:hover {
-    background-color: yellow;
-  }
-}
-
-button.star {
-  background-color: red;
-}
-
 select,
 input,
 textarea {
@@ -342,22 +305,56 @@ textarea {
   
 }
 
-.home-screen,
-.play-screen,
-.tutorial-screen {
+button {
+  border: 0;
+  background-color: fuchsia;
+  color: white;
+  font-family: inherit;
+  padding: 8px 30px;
+  border-radius: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  font-size: 22px;
 
-  button {
-    border: 0;
-    background-color: fuchsia;
-    color: white;
-    font-family: inherit;
-    padding: 8px 30px;
-    border-radius: 10px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    font-size: 22px;
+  &.close {
+    background-color: transparent;
+    color: inherit;
+    font-weight: 700;
+    opacity: 0.8;
   }
-  
+
+  &.point {
+    background-color: deepskyblue;
+    border: 0;
+    color: white;
+    font-size: 20px;
+    border-radius: 100%;
+    position: absolute;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+
+    &:hover,
+    &.logged {
+      background-color: maroon;
+    }
+  }
+
+  &.pos {
+    background-color: transparent;
+    border: 0;
+    position: absolute;
+    font-size: 40px;
+
+    &:hover {
+      background-color: yellow;
+    }
+  }
+
+  &.star {
+    background-color: red;
+  }
+
 }
 
 .home-screen {
@@ -396,6 +393,11 @@ textarea {
   width: calc(100% - 20px);
   max-width: 500px;
 
+  &-head {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
   &-body {
     padding-bottom: 20px;
     line-height: 1.2;
@@ -405,14 +407,14 @@ textarea {
     display: flex;
     justify-content: end;
     gap: 10px;
+  }
 
-    button {
-      &.close {
-        background-color: transparent;
-        color: inherit;
-        font-weight: 700;
-        opacity: 0.8;
-      }
+  &.pro {
+    top: 50%;
+    transform: translate(-50%, -50%);
+  
+    &[data-active="false"] {
+      display: none;
     }
   }
 
