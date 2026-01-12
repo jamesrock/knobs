@@ -3,7 +3,7 @@ import { Tutorial } from './Tutorial';
 import { Screen } from './Screen';
 import { storage, createNode, timeToDisplay } from './utils';
 import { puzzles } from './puzzles';
-import { purchaseManager } from './PurchaseManager';
+import { store } from './Store';
 
 export class Home extends Screen {
   constructor() {
@@ -43,7 +43,7 @@ export class Home extends Screen {
                 <h2>loving knobs?!</h2>\
               </div>\
               <div class="prompt-body">\
-                <p>If so, please consider making a small one-off contribution of ${purchaseManager.price} to unlock all ${puzzles.length} puzzles — plus 500 new puzzles every month!</p>\
+                <p>If so, please consider making a small one-off contribution of ${store.price} to unlock all ${puzzles.length} puzzles — plus 500 new puzzles every month!</p>\
               </div>\
               <div class="prompt-foot">
                 <button data-action="cancel" class="close">no thanks!</button>\
@@ -73,7 +73,7 @@ export class Home extends Screen {
           prompt.dataset.active = false;
         break;
         case 'gopro':
-          purchaseManager.purchaseInAppProduct(() => {
+          store.purchaseInAppProduct(() => {
 
             storage.set('pro', true);
 

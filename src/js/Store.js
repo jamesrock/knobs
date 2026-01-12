@@ -1,12 +1,12 @@
 import { NativePurchases, PURCHASE_TYPE } from '@capgo/native-purchases';
 
-class PurchaseManager {
+class Store {
   premiumProductId = 'me.jamesrock.knobs.pro';
   supported = false;
   name = '{name}';
   price = '{price}';
 
-  async initializeStore() {
+  async initialize() {
     try {
       
       const { isBillingSupported } = await NativePurchases.isBillingSupported();
@@ -16,15 +16,15 @@ class PurchaseManager {
 
       this.supported = true;
 
-      await this.loadProducts();
+      await this.fetchProduct();
       
     }
     catch (error) {
-      console.error('Store initialization failed:', error);
+      console.log('Store initialization failed');
     };
   };
 
-  async loadProducts() {
+  async fetchProduct() {
     try {
       
       const { product } = await NativePurchases.getProduct({
@@ -40,14 +40,16 @@ class PurchaseManager {
       
     }
     catch (error) {
-      console.error('Failed to load products:', error);
+      
+      console.log('Failed to load products');
       throw error;
+
     };
   };
 
-  // Purchase one-time product (no planIdentifier needed)
   async purchaseInAppProduct(success) {
     try {
+      
       console.log('Starting in-app purchase...');
       
       const result = await NativePurchases.purchaseProduct({
@@ -59,19 +61,20 @@ class PurchaseManager {
       console.log('In-app purchase successful!', result.transactionId);
       success();
       
-    } catch (error) {
-      console.error('In-app purchase failed:', error);
+    }
+    catch(error) {
       this.handlePurchaseError(error);
     }
   };
 
   handlePurchaseError(error) {
-    // Handle different error scenarios
-    if (error.message.includes('User cancelled')) {
+    if(error.message.includes('User cancelled')) {
       console.log('User cancelled the purchase');
-    } else if (error.message.includes('Network')) {
+    }
+    else if(error.message.includes('Network')) {
       alert('Network error. Please check your connection and try again.');
-    } else {
+    }
+    else {
       alert('Purchase failed. Please try again.');
     }
   };
@@ -87,38 +90,38 @@ class PurchaseManager {
       
       const result = await response.json();
       console.log('Server verification:', result);
-    } catch (error) {
-      console.error('Server verification failed:', error);
     }
+    catch (error) {
+      console.log('Server verification failed');
+    };
   };
 
   async restorePurchases() {
     try {
-      await NativePurchases.restorePurchases();
-      console.log('Purchases restored successfully');
+      
+      const purchases = await NativePurchases.restorePurchases();
+      console.log('Purchases restored successfully', purchases);
 
       // Check if user has active premium after restore
-      const product = await this.getProductInfo();
+      // const product = await this.getProductInfo();
       // Update UI based on restored purchases
 
-    } catch (error) {
-      console.error('Failed to restore purchases:', error);
     }
+    catch (error) {
+      console.log('Failed to restore purchases');
+    };
   };
 
   async openSubscriptionManagement() {
     try {
       await NativePurchases.manageSubscriptions();
       console.log('Opened subscription management page');
-    } catch (error) {
-      console.error('Failed to open subscription management:', error);
     }
+    catch (error) {
+      console.log('Failed to open subscription management');
+    };
   };
 };
 
-export const purchaseManager = new PurchaseManager();
-purchaseManager.initializeStore();
-
-// purchaseManager.purchaseInAppProduct();
-// purchaseManager.restorePurchases();
-// purchaseManager.openSubscriptionManagement();
+export const store = new Store();
+store.initialize();
