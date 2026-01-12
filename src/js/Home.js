@@ -40,14 +40,14 @@ export class Home extends Screen {
 
             prompt.innerHTML = `\
               <div class="prompt-head">\
-                <h3>polite request</h3>\
+                <h2>loving knobs?!</h2>\
               </div>\
               <div class="prompt-body">\
-                <p>Please consider paying ${purchaseManager.price} for ${purchaseManager.name}.</p>\
+                <p>If so, please consider making a small one-off contribution of ${purchaseManager.price} to unlock all ${puzzles.length} puzzles — plus 500 new puzzles every month!</p>\
               </div>\
               <div class="prompt-foot">
                 <button data-action="cancel" class="close">no thanks!</button>\
-                <button data-action="gopro">go pro</button>\
+                <button data-action="gopro">continue</button>\
               </div>\
             `;
           
@@ -69,9 +69,6 @@ export class Home extends Screen {
     prompt.addEventListener('click', (e) => {
       switch(e.target?.dataset?.action) {
         case 'cancel':
-          this.destroy();
-          new Tutorial();
-        break;
         case 'continue':
           prompt.dataset.active = false;
         break;
@@ -82,10 +79,10 @@ export class Home extends Screen {
 
             prompt.innerHTML = `\
               <div class="prompt-head">\
-                <h3>thank you!</h3>\
+                <h2>thank you!</h2>\
               </div>\
               <div class="prompt-body">\
-                <p>Thanks SO much for your generosity! Enjoy the game...</p>\
+                <p>Thank you SO much! Enjoy the game...</p>\
               </div>\
               <div class="prompt-foot">
                 <button data-action="continue">continue</button>\
