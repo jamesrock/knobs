@@ -1,0 +1,10 @@
+{
+  "appId": "me.jamesrock.knobs",
+  "appName": "knobs",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    }
+  }
+}
