@@ -3,6 +3,7 @@ import { Tutorial } from './Tutorial';
 import { Screen } from './Screen';
 import { storage, createNode, timeToDisplay } from './utils';
 import { puzzles } from './puzzles';
+import { purchaseManager } from './PurchaseManager';
 
 export class Home extends Screen {
   constructor() {

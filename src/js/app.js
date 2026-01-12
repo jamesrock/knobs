@@ -2,7 +2,6 @@ import { Builder } from './Builder';
 import { Home } from './Home';
 import { Checker } from './Checker';
 import { Icon } from './Icon';
-import { SubscriptionService } from './SubscriptionService';
 import { storage } from './utils';
 
 const stats = storage.get('stats');
@@ -31,11 +30,3 @@ else if(mode==='icon') {
 else {
   new Home();
 };
-
-document.addEventListener('deviceready', () => {
-  
-  console.log('deviceready');
-  const service = new SubscriptionService();
-  console.log('hasActiveSubscription', service.hasActiveSubscription());
-
-});
