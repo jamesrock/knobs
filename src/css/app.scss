@@ -137,8 +137,9 @@ button {
   padding: 8px 25px;
   border-radius: 10px;
   font-weight: 800;
-  letter-spacing: 1px;
-  font-size: 20px;
+  font-size: 22px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 
   &.close {
     background-color: transparent;

@@ -69,11 +69,6 @@ export class Home extends Screen {
           this.destroy();
           new Tutorial();
         break;
-      };
-    });
-
-    prompt.addEventListener('click', (e) => {
-      switch(e.target?.dataset?.action) {
         case 'cancel':
         case 'continue':
           prompt.dataset.active = false;
@@ -81,7 +76,7 @@ export class Home extends Screen {
         case 'gopro':
           store.purchaseInAppProduct(() => {
 
-            // storage.set('pro', true);
+            storage.set('pro', true);
 
             prompt.innerHTML = `\
               <div class="prompt-head">\
@@ -100,9 +95,9 @@ export class Home extends Screen {
       };
     });
 
+    this.node.appendChild(prompt);
     this.target.appendChild(this.node);
-    this.target.appendChild(prompt);
 
   };
-  limit = 10;
+  limit = 10000;
 };
