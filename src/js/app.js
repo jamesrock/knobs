@@ -13,6 +13,7 @@ const setStats = window.resetStats = () => {
     best: 0
   });
   storage.set('pro', false);
+  storage.set('history', [0, []]);
 };
 
 if(!stats) {

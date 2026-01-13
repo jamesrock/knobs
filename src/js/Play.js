@@ -1,6 +1,7 @@
 import { Puzzle } from './Puzzle';
 import { Home } from './Home';
 import { Screen } from './Screen';
+import { puzzles } from './puzzles';
 import { createNode, timeToDisplay, storage } from './utils';
 
 export class Play extends Screen {
@@ -57,15 +58,27 @@ export class Play extends Screen {
   };
   startNewGame() {
 
-    this.solvedNode.dataset.state = 'disabled';
+    const stats = storage.get('stats');
 
-    this.removeOld();
+    if(stats.game<puzzles.length) {
 
-    this.puzzle = new Puzzle('#board', this.solvedHandler.bind(this));
+      this.solvedNode.dataset.state = 'disabled';
 
-    this.node.querySelector('h1').innerText = `knobs ${this.puzzle.id}`;
+      this.removeOld();
 
-    this.start = Date.now();
+      this.puzzle = new Puzzle('#board', this.solvedHandler.bind(this));
+
+      this.node.querySelector('h1').innerText = `knobs ${this.puzzle.id}`;
+
+      this.start = Date.now();
+
+    }
+    else {
+
+      this.destroy();
+      new Home();
+
+    };
 
   };
   solvedHandler() {
@@ -73,7 +86,7 @@ export class Play extends Screen {
     const stats = storage.get('stats');
     const time = (Date.now() - this.start);
     this.solvedNode.innerHTML = `\
-    <div class="game-over-body">\
+    <div class="solved-body">\
       <h2>knobs ${this.puzzle.id}</h2>\
       <h3>solved!</h3>\
       <p class="time">Time: ${timeToDisplay(time)}</p>\

@@ -5,7 +5,6 @@ export class Icon extends Screen {
   constructor() {
     
     super();
-    this.stats = storage.get('stats');
     this.render();
 
   };

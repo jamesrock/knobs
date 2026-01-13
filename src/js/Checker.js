@@ -7,7 +7,6 @@ export class Checker extends Screen {
   constructor() {
     
     super();
-    this.stats = storage.get('stats');
     this.render();
 
   };

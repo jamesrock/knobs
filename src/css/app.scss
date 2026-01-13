@@ -402,6 +402,10 @@ textarea {
     line-height: 1;
   }
 
+  &-body {
+    pointer-events: none;
+  }
+
   .time {
     font-size: 22px;
   }

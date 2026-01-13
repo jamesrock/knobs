@@ -9,7 +9,6 @@ export class Home extends Screen {
   constructor() {
     
     super();
-    this.stats = storage.get('stats');
     this.render();
 
   };
@@ -57,9 +56,26 @@ export class Home extends Screen {
             prompt.dataset.active = true;
 
           }
-          else {
+          else if(this.stats.game<puzzles.length) {
             this.destroy();
             new Play();
+          }
+          else {
+
+            prompt.innerHTML = `\
+              <div class="prompt-head">\
+                <h2>Harry!<br />I've reached the top!</h2>\
+              </div>\
+              <div class="prompt-body">\
+                <p>You've only gone and completed ALL ${puzzles.length} puzzles! 500 new puzzles are dropped every month, on or around the 1st. Check the App Store for any updates.</p>\
+              </div>\
+              <div class="prompt-foot">
+                <button data-action="cancel">close</button>\
+              </div>\
+            `;
+          
+            prompt.dataset.active = true;
+
           };
         break;
         case 'restore':
