@@ -232,8 +232,12 @@ textarea {
     animation: pulse 1s infinite;
   }
 
-  &[data-state="pre-show"] {
+  &[data-visible="false"] {
     transform: scale(0);
+  }
+
+  &[data-visible="false"][data-state="off"] {
+    transform: rotate(-180deg) scale(0);
   }
 
   &:before,

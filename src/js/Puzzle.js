@@ -2,9 +2,10 @@ import { puzzles } from './puzzles';
 import { makeEven, limit, storage, isTiny, createNode } from './utils';
 
 export class Puzzle {
-	constructor(target, solvedHandler, saved = -1) {
+	constructor(selector, solvedHandler, saved = -1) {
 
 		const stats = storage.get('stats');
+		const history = storage.get('history');
 		const getter = saved > -1 ? saved : stats.game;
 		const puzzle = puzzles[getter];
 
@@ -16,13 +17,19 @@ export class Puzzle {
 
 		this.stars = puzzle[0];
 		this.map = puzzle[1];
-		this.data = puzzle;
     this.tiles = this.tileMap.map((tile, index) => {
       return new PuzzleTile(tile[0], tile[1], this.map[index], this.stars[index]);
     });
-		this.target = document.querySelector(target);
+		this.target = document.querySelector(selector);
     this.solvedHandler = solvedHandler;
+		this.getter = getter;
 		this.id = `#${getter + 1}`;
+
+		if(history && history[0]===getter) {
+			history[1].forEach((state, index) => {
+				this.tiles[index].state = (state === 1 ? 'on' : 'off');
+			});
+		};
 
 		this.render();
 
@@ -97,12 +104,11 @@ export class Puzzle {
 		this.tiles.forEach((tile, index) => {
 			this.knobs[index].dataset.state = tile.state;
 			this.knobs[index].dataset.animation = tile.animation;
+			this.knobs[index].dataset.visible = tile.visible;
 		});
+		storage.set('history', [this.getter, this.getData()]);
 		return this;
 
-	};
-	getValues() {
-		return this.data;
 	};
 	checkForWin() {
 		const off = this.tiles.filter((tile) => {
@@ -151,7 +157,7 @@ export class Puzzle {
 			animation.forEach((line, index) => {
 				setTimeout(() => {
 					line.forEach((item) => {
-						this.tiles[item].enable();
+						this.tiles[item].show();
 					});
 					this.updateStates();
 					if(index===animation.length-1) {
@@ -172,6 +178,11 @@ export class Puzzle {
 		this.updateStates();
 		return this;
 
+	};
+	getData() {
+		return this.tiles.map((tile) => {
+			return tile.state === 'on' ? 1 : 0;
+		});
 	};
 	animations = [
 		[
@@ -209,8 +220,9 @@ class PuzzleTile {
 	constructor(x, y, b, value = 0) {
 
 		this.value = value;
-		this.state = 'pre-show';
+		this.state = 'on';
 		this.animation = 'bounce';
+		this.visible = false;
 		this.x = x;
 		this.y = y;
 		this.b = b;
@@ -248,13 +260,24 @@ class PuzzleTile {
 	};
 	unhighlight() {
 		
-		this.enable();
-		return this;
+		return this.enable();
 
 	};
 	clearAnimation() {
 		
 		this.animation = 'linear';
+		return this;
+
+	};
+	show() {
+		
+		this.visible = true;
+		return this;
+
+	};
+	hide() {
+		
+		this.visible = false;
 		return this;
 
 	};
