@@ -104,7 +104,9 @@ export class Home extends Screen {
           };
         break;
         case 'restore':
-          store.restorePurchases();
+          store.restorePurchases().then((bob) => {
+            console.log('purchases: ', bob);
+          });
         break;
         case 'tutorial':
           this.destroy();
