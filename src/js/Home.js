@@ -115,5 +115,5 @@ export class Home extends Screen {
     this.target.appendChild(this.node);
 
   };
-  limit = 10000;
+  limit = 10;
 };
