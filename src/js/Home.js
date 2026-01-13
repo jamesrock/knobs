@@ -38,22 +38,47 @@ export class Home extends Screen {
     this.node.addEventListener('click', (e) => {
       switch(e.target?.dataset?.action) {
         case 'play':
-          if(store.supported && this.stats.game>=this.limit && !storage.get('pro')) {
+          if(this.stats.game>=this.limit && !storage.get('pro')) {
 
-            prompt.innerHTML = `\
-              <div class="prompt-head">\
-                <h2>loving knobs?!</h2>\
-              </div>\
-              <div class="prompt-body">\
-                <p>Please consider making a small one-off contribution of ${store.price} to unlock all ${puzzles.length} puzzles — plus 500 new puzzles every month!</p>\
-              </div>\
-              <div class="prompt-foot">
-                <button data-action="cancel" class="close">no thanks!</button>\
-                <button data-action="gopro">continue</button>\
-              </div>\
-            `;
-          
-            prompt.dataset.active = true;
+            store.checkSupport().then(({isBillingSupported}) => {
+              if(isBillingSupported) {
+                store.fetchProduct().then(({product}) => {
+
+                  prompt.innerHTML = `\
+                    <div class="prompt-head">\
+                      <h2>loving knobs?!</h2>\
+                    </div>\
+                    <div class="prompt-body">\
+                      <p>Please consider making a small one-off contribution of ${product.priceString} to unlock all ${puzzles.length} puzzles — plus 500 new puzzles every month!</p>\
+                    </div>\
+                    <div class="prompt-foot">
+                      <button data-action="cancel" class="close">no thanks!</button>\
+                      <button data-action="gopro">continue</button>\
+                    </div>\
+                  `;
+                
+                  prompt.dataset.active = true;
+
+                });
+              }
+              else {
+                
+                prompt.innerHTML = `\
+                  <div class="prompt-head">\
+                    <h2>download the app!</h2>\
+                  </div>\
+                  <div class="prompt-body">\
+                    <p>Only ${this.limit} free games are supported online. Please download the knobs app to play all levels.</p>\
+                  </div>\
+                  <div class="prompt-foot">
+                    <button data-action="cancel">close</button>\
+                  </div>\
+                `;
+
+                prompt.dataset.active = true;
+
+              };
+            });
 
           }
           else if(this.stats.game<puzzles.length) {
@@ -90,7 +115,9 @@ export class Home extends Screen {
           prompt.dataset.active = false;
         break;
         case 'gopro':
-          store.purchaseInAppProduct(() => {
+          store.purchaseProduct().then((receipt) => {
+
+            console.log(receipt.transactionId);
 
             storage.set('pro', true);
 
@@ -106,6 +133,18 @@ export class Home extends Screen {
               </div>\
             `;
 
+          }).catch((error) => {
+            
+            if(error.message.includes('User cancelled')) {
+              console.log('User cancelled the purchase');
+            }
+            else if(error.message.includes('Network')) {
+              alert('Network error. Please check your connection and try again.');
+            }
+            else {
+              alert('Purchase failed. Please try again.');
+            };
+
           });
         break;
       };
@@ -115,5 +154,5 @@ export class Home extends Screen {
     this.target.appendChild(this.node);
 
   };
-  limit = 10;
+  limit = 1;
 };
