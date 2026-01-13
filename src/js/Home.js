@@ -39,7 +39,7 @@ export class Home extends Screen {
     this.node.addEventListener('click', (e) => {
       switch(e.target?.dataset?.action) {
         case 'play':
-          if(this.stats.game>=this.limit && !storage.get('pro')) {
+          if(store.supported && this.stats.game>=this.limit && !storage.get('pro')) {
 
             prompt.innerHTML = `\
               <div class="prompt-head">\

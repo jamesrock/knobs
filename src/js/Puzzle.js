@@ -68,7 +68,7 @@ export class Puzzle {
 
 		puzzle.addEventListener('touchmove', (e) => {
 			const knob = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
-			if(knob.classList.contains('knob')) {
+			if(knob?.classList.contains('knob')) {
 				if(knobs.indexOf(knob)===-1) {
 					knobs.push(knob);
 					this.tiles[knob.dataset.index].disable();

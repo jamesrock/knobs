@@ -34,9 +34,6 @@ class Store {
 
       this.name = product.title;
       this.price = product.priceString;
-      this.label = `${this.name} ${this.price}`;
-
-      console.log(this.label);
       
     }
     catch (error) {
