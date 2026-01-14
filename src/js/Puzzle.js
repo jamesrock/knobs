@@ -150,6 +150,8 @@ export class Puzzle {
 
 	};
 	runAnimation(a = 0, speed = 55) {
+
+		this.hide();
 		
 		const animation = this.animations[a];
 
@@ -183,6 +185,24 @@ export class Puzzle {
 		return this.tiles.map((tile) => {
 			return tile.state === 'on' ? 1 : 0;
 		});
+	};
+	show() {
+		
+		this.tiles.forEach((tile) => {
+			tile.show();
+		});
+		this.updateStates();
+		return this;
+
+	};
+	hide() {
+		
+		this.tiles.forEach((tile) => {
+			tile.hide();
+		});
+		this.updateStates();
+		return this;
+
 	};
 	animations = [
 		[
@@ -222,7 +242,7 @@ class PuzzleTile {
 		this.value = value;
 		this.state = 'on';
 		this.animation = 'bounce';
-		this.visible = false;
+		this.visible = true;
 		this.x = x;
 		this.y = y;
 		this.b = b;
