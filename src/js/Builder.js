@@ -88,7 +88,7 @@ export class Builder extends Screen {
             btn.classList.add('star');
           }
           else {
-            this.set(btn, Number(this.box));
+            this.set(btn, Number(this.box), true);
           };
           this.renderOutput();
         });
@@ -282,12 +282,13 @@ export class Builder extends Screen {
     this.renderOutput(false);
 
   };
-  set(knob, value) {
+  set(knob, value, force = false) {
     
-    if(knob.dataset.set==='no') {
+    if(force || knob.dataset.set==='no') {
       this.map[knob.dataset.value] = value;
-      knob.innerText = value;
+      knob.dataset.box = value;
       knob.dataset.set = 'yes';
+      knob.innerText = value;
     };
     
     return this;

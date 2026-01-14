@@ -432,6 +432,9 @@ textarea {
     font-weight: 800;
     font-size: 22px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     -webkit-tap-highlight-color: transparent;
 
     &.point {
@@ -459,13 +462,49 @@ textarea {
       font-size: 40px;
       padding: 0;
 
+      &[data-box="0"] {
+        color: var(--box-0);
+      }
+    
+      &[data-box="1"] {
+        color: var(--box-1);
+      }
+    
+      &[data-box="2"] {
+        color: var(--box-2);
+      }
+    
+      &[data-box="3"] {
+        color: var(--box-3);
+      }
+    
+      &[data-box="4"] {
+        color: var(--box-4);
+      }
+    
+      &[data-box="5"] {
+        color: var(--box-5);
+      }
+    
+      &[data-box="6"] {
+        color: var(--box-6);
+      }
+    
+      &[data-box="7"] {
+        color: var(--box-7);
+      }
+
       &:hover {
         background-color: yellow;
       }
+
     }
 
     &.star {
-      background-color: red;
+      font-size: 90px;
+      background-color: black;
+      border-radius: 100%;
+      transform: scale(0.8);
     }
 
   }
