@@ -191,37 +191,44 @@ button {
   }
 
   &[data-animation="bounce"] {
-    transition: all .5s cubic-bezier(0.34, 1.56, 0.64, 1);;
+    transition: all .5s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   &[data-box="0"] {
     border-color: var(--box-0);
     background-color: var(--box-0);
   }
+
   &[data-box="1"] {
     border-color: var(--box-1);
     background-color: var(--box-1);
   }
+
   &[data-box="2"] {
     border-color: var(--box-2);
     background-color: var(--box-2);
   }
+
   &[data-box="3"] {
     border-color: var(--box-3);
     background-color: var(--box-3);
   }
+
   &[data-box="4"] {
     border-color: var(--box-4);
     background-color: var(--box-4);
   }
+
   &[data-box="5"] {
     border-color: var(--box-5);
     background-color: var(--box-5);
   }
+
   &[data-box="6"] {
     border-color: var(--box-6);
     background-color: var(--box-6);
   }
+
   &[data-box="7"] {
     border-color: var(--box-7);
     background-color: var(--box-7);
@@ -460,5 +467,5 @@ button {
   &.good {
     border-color: green;
   }
-  
+
 }
