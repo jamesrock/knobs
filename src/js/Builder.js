@@ -1,5 +1,5 @@
 import { Screen } from './Screen';
-import { createButton, createNode } from './utils';
+import { createButton, createNode, colors } from './utils';
 
 const preventDefaults = (e) => {
   e.preventDefault();
@@ -277,7 +277,7 @@ export class Builder extends Screen {
   offset = 20;
   looper = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   starLooper = [0, 1, 2, 3, 4, 5, 6, 7];
-  modes = [[0, 'purple'], [1, 'blue'], [2, 'yellow'], [3, 'green'], [4, 'orange'], [5, 'red'], [6, 'pink'], [7, 'cyan'], ['stars', 'stars']];
+  modes = [...colors.map(([name], index) => [index, name]), ['stars', 'stars']];
   positions = [
     ['#1', '437', '373'],
     ['#2', '-466', '311'],
