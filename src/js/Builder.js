@@ -115,10 +115,6 @@ export class Builder extends Screen {
       this.reset();
     });
     space.addEventListener('input', () => {
-      this.buttons.forEach((btn) => {
-        btn.style.top = `${btn.dataset.x * space.value}px`;
-        btn.style.left = `${btn.dataset.y * space.value}px`;
-      });
       board.style.width = board.style.height = `${space.value * (this.looper.length-1)}px`;
     });
     modeSelect.addEventListener('input', () => {
@@ -288,7 +284,6 @@ export class Builder extends Screen {
     ['#3', '437', '-462'],
     ['#4', '-465', '-523']
   ];
-  buttons = [];
   starButtons = [];
   box = 0;
   stars = [];
