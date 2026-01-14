@@ -5,7 +5,7 @@ import { Icon } from './Icon';
 import { storage, colors } from './utils';
 
 const stats = storage.get('stats');
-const mode = 'build'; // 'check', 'icon', 'build', 'play'
+const mode = 'play'; // 'check', 'icon', 'build', 'play'
 
 const setStats = window.resetStats = () => {
   storage.set('stats', {
