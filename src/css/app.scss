@@ -53,7 +53,8 @@
   --box-5: red;
   --box-6: magenta;
   --box-7: cyan;
-  --box-off: grey;
+  // --box-off: grey;
+  --box-off: lightgray;
   --prompt-background: white;
   --prompt-foreground: rgb(32, 32, 32);
 }
@@ -129,6 +130,11 @@ textarea {
   border: 0;
 }
 
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .home-screen,
 .play-screen,
 .tutorial-screen {
@@ -142,8 +148,6 @@ textarea {
     border-radius: 10px;
     font-weight: 800;
     font-size: 22px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
 
     &.close {
       background-color: transparent;
@@ -178,6 +182,8 @@ textarea {
   color: white;
   text-align: center;
   font-weight: 800;
+  border-color: var(--box-off);
+  background-color: var(--box-off);
   -webkit-tap-highlight-color: transparent;
 
   @media (min-width: 600px) {
@@ -222,7 +228,7 @@ textarea {
   }
 
   &[data-state="off"] {
-    opacity: 0.2;
+    opacity: 0.5;
     transform: rotate(-180deg);
     border-color: var(--box-off);
     background-color: var(--box-off);
@@ -425,86 +431,10 @@ textarea {
   position: relative;
   margin-bottom: 40px;
 
-  button {
-    border: 0;
-    color: inherit;
-    font-family: inherit;
-    font-weight: 800;
-    font-size: 22px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    -webkit-tap-highlight-color: transparent;
-
-    &.point {
-      background-color: deepskyblue;
-      border: 0;
-      color: white;
-      font-size: 20px;
-      border-radius: 100%;
-      position: absolute;
-      font-weight: bold;
-      width: 40px;
-      height: 40px;
-      padding: 0;
-
-      &:hover,
-      &.logged {
-        background-color: maroon;
-      }
-    }
-
-    &.pos {
-      background-color: transparent;
-      border: 0;
-      position: absolute;
-      font-size: 40px;
-      padding: 0;
-
-      &[data-box="0"] {
-        color: var(--box-0);
-      }
-    
-      &[data-box="1"] {
-        color: var(--box-1);
-      }
-    
-      &[data-box="2"] {
-        color: var(--box-2);
-      }
-    
-      &[data-box="3"] {
-        color: var(--box-3);
-      }
-    
-      &[data-box="4"] {
-        color: var(--box-4);
-      }
-    
-      &[data-box="5"] {
-        color: var(--box-5);
-      }
-    
-      &[data-box="6"] {
-        color: var(--box-6);
-      }
-    
-      &[data-box="7"] {
-        color: var(--box-7);
-      }
-
-      &:hover {
-        background-color: yellow;
-      }
-
-    }
+  .knob {
 
     &.star {
-      font-size: 90px;
       background-color: black;
-      border-radius: 100%;
-      transform: scale(0.8);
     }
 
   }
@@ -526,4 +456,9 @@ textarea {
   opacity: 0.25;
   top: -100px;
   left: -100px;
+
+  &.good {
+    border-color: green;
+  }
+  
 }

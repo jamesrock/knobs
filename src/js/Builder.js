@@ -1,5 +1,5 @@
 import { Screen } from './Screen';
-import { createButton } from './utils';
+import { createButton, createNode } from './utils';
 
 const preventDefaults = (e) => {
   e.preventDefault();
@@ -47,7 +47,7 @@ export class Builder extends Screen {
 	render() {
 
     const board = createContainer('builder');
-    const nudge = createContainer('nudge');
+    const nudge = this.nudge = createContainer('nudge');
     const inputs = createContainer('inputs');
     const outputs = createContainer('outputs');
     const modeSelect = this.modeSelect = createSelect();
@@ -81,39 +81,31 @@ export class Builder extends Screen {
 
     this.starLooper.forEach((y) => {
       this.starLooper.forEach((x) => {
-        const btn = createButton('', 'pos');
+        const btn = createNode('div', 'knob');
         btn.addEventListener('click', () => {
           if(this.box==='stars') {
             this.stars[btn.dataset.value] = 1;
             btn.classList.add('star');
+            this.starCount ++;
+            if(this.starCount===8) {
+              nudge.classList.add('good');
+            };
           }
           else {
             this.set(btn, Number(this.box), true);
           };
           this.renderOutput();
         });
-        btn.style.top = `${y * this.space}px`;
-        btn.style.left = `${x * this.space}px`;
-        btn.style.width = `${this.space}px`;
-        btn.style.height = `${this.space}px`;
+        btn.style.top = `${(y * this.space) + 10}px`;
+        btn.style.left = `${(x * this.space) + 10}px`;
+        btn.style.width = `${this.space - 20}px`;
+        btn.style.height = `${this.space - 20}px`;
+        btn.dataset.state = 'off';
         btn.dataset.x = x;
         btn.dataset.y = y;
         btn.dataset.value = this.starButtons.length;
-        btn.dataset.set = 'no';
         board.appendChild(btn);
         this.starButtons.push(btn);
-      });
-    });
-
-    this.looper.forEach((y) => {
-      this.looper.forEach((x) => {
-        const btn = createButton(`${x},${y}`, 'point');
-        btn.style.top = `${(y * this.space) - this.offset}px`;
-        btn.style.left = `${(x * this.space) - this.offset}px`;
-        btn.dataset.x = x;
-        btn.dataset.y = y;
-        board.appendChild(btn);
-        this.buttons.push(btn);
       });
     });
 
@@ -161,7 +153,7 @@ export class Builder extends Screen {
 
 		board.addEventListener('touchmove', (e) => {
 			const knob = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
-			if(knob.classList.contains('pos')) {
+			if(knob?.classList.contains('knob')) {
 				if(knobs.indexOf(knob)===-1) {
 					knobs.push(knob);
           this.set(knob, Number(this.box));
@@ -184,7 +176,6 @@ export class Builder extends Screen {
         this.box = 'stars';
       };
       modeSelect.value = this.box;
-      this.clearSelection();
 
     });
 
@@ -230,13 +221,15 @@ export class Builder extends Screen {
     this.history = [];
 
     this.starButtons.forEach((btn) => {
-      btn.dataset.set = 'no';
-      btn.innerText = '';
+      btn.dataset.state = 'off';
       btn.classList.remove('star');
     });
 
     this.box = 0;
     this.modeSelect.value = this.box;
+
+    this.starCount = 0;
+    this.nudge.classList.remove('good');
 
     if(hard) {
       this.puzzleSelect.value = 0;
@@ -244,7 +237,6 @@ export class Builder extends Screen {
 
     this.renderPuzzle();
     this.renderOutput();
-    this.clearSelection();
 
   };
   renderOutput(write = true) {
@@ -264,14 +256,6 @@ export class Builder extends Screen {
     return this;
 
   };
-  clearSelection() {
-    
-    this.buttons.forEach((btn) => {
-      btn.classList.remove('logged');
-    });
-    return this;
-
-  };
   undo() {
     
     this.history.pop();
@@ -284,17 +268,17 @@ export class Builder extends Screen {
   };
   set(knob, value, force = false) {
     
-    if(force || knob.dataset.set==='no') {
+    if(force || knob.dataset.state==='off') {
       this.map[knob.dataset.value] = value;
       knob.dataset.box = value;
-      knob.dataset.set = 'yes';
-      knob.innerText = value;
+      knob.dataset.state = 'on';
     };
     
     return this;
 
   };
   space = 85;
+  offset = 20;
   looper = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   starLooper = [0, 1, 2, 3, 4, 5, 6, 7];
   modes = [0, 1, 2, 3, 4, 5, 6, 7, 'stars'];
@@ -309,6 +293,6 @@ export class Builder extends Screen {
   box = 0;
   stars = [];
   map = [];
-  offset = 20;
   history = [];
+  starCount = 0;
 };
