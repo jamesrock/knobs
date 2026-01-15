@@ -2,7 +2,7 @@ import { Builder } from './Builder';
 import { Home } from './Home';
 import { Checker } from './Checker';
 import { Icon } from './Icon';
-import { storage, colors } from './utils';
+import { storage } from './utils';
 
 const stats = storage.get('stats');
 const mode = 'play'; // 'check', 'icon', 'build', 'play'
@@ -32,7 +32,3 @@ else if(mode==='icon') {
 else {
   new Home();
 };
-
-colors.forEach(([name, value], index) => {
-  document.documentElement.style.setProperty(`--box-${index}`, value);
-});

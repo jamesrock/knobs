@@ -1,5 +1,5 @@
 import { puzzles } from './puzzles';
-import { makeEven, limit, storage, isTiny, createNode } from './utils';
+import { makeEven, limit, storage, isTiny, createNode, colors, shuffle } from './utils';
 
 export class Puzzle {
 	constructor(selector, solvedHandler, saved = -1) {
@@ -25,10 +25,14 @@ export class Puzzle {
 		this.getter = getter;
 		this.id = `#${getter + 1}`;
 
-		if(history && history[0]===getter) {
+		if(saved === -1 && history && history[0]===getter) {
 			history[1].forEach((state, index) => {
 				this.tiles[index].state = (state === 1 ? 'on' : 'off');
 			});
+		};
+
+		if(saved > -1) {
+			this.randomColors = false;
 		};
 
 		this.render();
@@ -91,6 +95,7 @@ export class Puzzle {
 
 		this.target.appendChild(puzzle);
 
+		this.setColors();
 		this.updateStates();
 		this.runAnimation();
 
@@ -204,6 +209,16 @@ export class Puzzle {
 		return this;
 
 	};
+	setColors() {
+		let $colours = [...colors];
+		if(this.randomColors) {
+			$colours = shuffle($colours);
+		};
+		$colours.forEach(([name, value], index) => {
+			this.node.style.setProperty(`--box-${index}`, value);
+		});
+		return this;
+	};
 	animations = [
 		[
 			[27, 28, 35, 36],
@@ -234,6 +249,7 @@ export class Puzzle {
 	tileMap = [];
 	knobs = [];
 	labels = false;
+	randomColors = true;
 };
 
 class PuzzleTile {

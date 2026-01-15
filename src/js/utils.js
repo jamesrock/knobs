@@ -4,7 +4,15 @@ export const createNode = (type, className) => {
   node.classList.add(className);
   return node;
 };
-const shuffle = array => {
+export const createButton = (label = '', className = '') => {
+  const btn = document.createElement('button');
+  btn.innerText = label;
+  if(className) {
+    btn.classList.add(className);
+  };
+  return btn;
+};
+export const shuffle = array => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     const temp = array[i];
@@ -35,32 +43,12 @@ const $colors = {
     ['purple', 'rgb(184, 23, 255)'],
     ['blue', 'rgb(0, 132, 255)'],
     ['yellow', 'gold'],
-    ['orange', 'rgb(255, 135, 0)'],
     ['green', 'rgb(58, 255, 0)'],
+    ['orange', 'rgb(255, 135, 0)'],
     ['red', 'red'],
     ['pink', 'magenta'],
     ['cyan', 'cyan']
   ]
 };
-
-// --box-0: rgb(184, 23, 255);
-// --box-1: rgb(0, 132, 255);
-// --box-2: gold;
-// --box-3: rgb(58, 255, 0);
-// --box-4: rgb(255, 135, 0);
-// --box-5: red;
-// --box-6: magenta;
-// --box-7: cyan;
-
 export const getColor = (key) => $colors[isDarkMode() ? 'dark' : 'light'][key];
-export const createButton = (label = '', className = '') => {
-  const btn = document.createElement('button');
-  btn.innerText = label;
-  if(className) {
-    btn.classList.add(className);
-  };
-  return btn;
-};
-export const colors = shuffle($colors[isDarkMode() ? 'dark' : 'light']);
-
-console.log(colors);
+export const colors = $colors[isDarkMode() ? 'dark' : 'light'];
