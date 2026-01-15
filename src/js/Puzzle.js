@@ -72,9 +72,8 @@ export class Puzzle {
 
 		});
 
-		puzzle.addEventListener('touchstart', (e) => {
+		puzzle.addEventListener('touchstart', () => {
 			knobs = [];
-			// e.preventDefault();
 		});
 
 		puzzle.addEventListener('touchmove', (e) => {
@@ -89,7 +88,7 @@ export class Puzzle {
 			e.preventDefault();
 		});
 
-		puzzle.addEventListener('touchend', (e) => {
+		puzzle.addEventListener('touchend', () => {
 			this.checkForWin();
 		});
 

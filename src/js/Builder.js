@@ -142,9 +142,8 @@ export class Builder extends Screen {
 
     });
 
-    board.addEventListener('touchstart', (e) => {
+    board.addEventListener('touchstart', () => {
 			knobs = [];
-			// e.preventDefault();
 		});
 
 		board.addEventListener('touchmove', (e) => {
@@ -159,11 +158,7 @@ export class Builder extends Screen {
 			e.preventDefault();
 		});
 
-		board.addEventListener('touchend', (e) => {
-			// this.checkForWin();
-		});
-
-    nudge.addEventListener('click', (e) => {
+    nudge.addEventListener('click', () => {
 
       if(this.box<7) {
         this.box ++;
