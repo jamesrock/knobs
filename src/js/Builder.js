@@ -21,13 +21,16 @@ const createOutput = () => {
 };
 
 const createContainer = (className = '') => {
-  const node = document.createElement('div');
-  node.classList.add(className);
-  return node;
+  return createNode('div', className);
 };
 
-const createSelect = () => {
-  return document.createElement('select');
+const createSelect = (options) => {
+  const node = document.createElement('select');
+  options.forEach(([label, value]) => {
+    const option = createOption(label, value);
+    node.appendChild(option);
+  })
+  return node;
 };
 
 const createOption = (label = '', value = '') => {
@@ -46,12 +49,12 @@ export class Builder extends Screen {
 	};
 	render() {
 
-    const board = createContainer('builder');
+    const board = this.node = createContainer('builder');
     const nudge = this.nudge = createContainer('nudge');
     const inputs = createContainer('inputs');
     const outputs = createContainer('outputs');
-    const modeSelect = this.modeSelect = createSelect();
-    const puzzleSelect = this.puzzleSelect = createSelect();
+    const modeSelect = this.modeSelect = createSelect(this.modes);
+    const puzzleSelect = this.puzzleSelect = createSelect(this.positions.map(([label], value) => [label, value]));
     const positionX = this.positionX = createInput(this.positions[0][1]);
     const positionY = this.positionY = createInput(this.positions[0][2]);
     const space = createInput(this.space);
@@ -68,16 +71,6 @@ export class Builder extends Screen {
     nudge.style.width = nudge.style.height = `${this.space * (this.looper.length-1)}px`;
 
     this.target.style.position = 'relative';
-
-    this.modes.forEach(([value, label]) => {
-      const option = createOption(label, value);
-      modeSelect.appendChild(option);
-    });
-
-    this.positions.forEach((item, index) => {
-      const option = createOption(item[0], index);
-      puzzleSelect.appendChild(option);
-    });
 
     this.starLooper.forEach((y) => {
       this.starLooper.forEach((x) => {
@@ -184,6 +177,7 @@ export class Builder extends Screen {
     this.target.appendChild(inputs);
     this.target.appendChild(outputs);
 
+    this.setColors();
     this.reset();
 
 	};
@@ -268,11 +262,18 @@ export class Builder extends Screen {
     return this;
 
   };
+  setColors() {
+    let $colours = [...colors];
+    $colours.forEach(([name, value], index) => {
+      this.node.style.setProperty(`--box-${index}`, value);
+    });
+    return this;
+  };
   space = 85;
   offset = 20;
   looper = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   starLooper = [0, 1, 2, 3, 4, 5, 6, 7];
-  modes = [...colors.map(([name], index) => [index, name]), ['stars', 'stars']];
+  modes = [...colors.map(([name], index) => [name, index]), ['stars', 'stars']];
   positions = [
     ['#1', '437', '373'],
     ['#2', '-466', '311'],

@@ -1,15 +1,14 @@
 import { Storage } from './Storage';
 export const createNode = (type, className) => {
   const node = document.createElement(type);
-  node.classList.add(className);
+  if(className) {
+    node.classList.add(className);
+  };
   return node;
 };
 export const createButton = (label = '', className = '') => {
-  const btn = document.createElement('button');
+  const btn = createNode('button', className);
   btn.innerText = label;
-  if(className) {
-    btn.classList.add(className);
-  };
   return btn;
 };
 export const shuffle = array => {
