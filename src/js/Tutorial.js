@@ -1,11 +1,7 @@
 import { Puzzle } from './Puzzle';
 import { Home } from './Home';
 import { Screen } from './Screen';
-import { createNode, createButton } from './utils';
-
-const solvedHandler = () => {
-  // do nothing!
-};
+import { createNode, createButton, storage } from './utils';
 
 export class Tutorial extends Screen {
   constructor() {
@@ -96,7 +92,7 @@ export class Tutorial extends Screen {
 
     this.removeOld();
 
-    this.puzzle = new Puzzle('#board', solvedHandler, this.prompts[this.tutorial][0]);
+    this.puzzle = new Puzzle('#board', this.solvedHandler.bind(this), this.prompts[this.tutorial][0]);
 
     return this;
 
@@ -109,6 +105,16 @@ export class Tutorial extends Screen {
 
     return this;
 
+  };
+  solvedHandler = (force = false) => {
+    if(force) {
+      storage.set('stats', {
+        ...storage.get('stats'),
+        game: 10
+      });
+      this.destroy();
+      new Home();
+    };
   };
   completed = false;
   step = 0;

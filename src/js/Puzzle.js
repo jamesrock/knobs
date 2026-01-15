@@ -115,12 +115,23 @@ export class Puzzle {
 
 	};
 	checkForWin() {
+		
 		const off = this.tiles.filter((tile) => {
 			return tile.state==='off'&&tile.value===0;
 		}).length;
 		if(off===((this.size*this.size)-this.size)) {
 			this.solvedHandler();
 		};
+		if(!this.randomColors) {
+			const oranges = this.tiles.filter((tile) => {
+				return tile.b===4;
+			}).length;
+			if(oranges===3) {
+				this.solvedHandler(true);
+			};
+		};
+		return this;
+
 	};
 	destroy() {
 		
