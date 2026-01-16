@@ -42,7 +42,7 @@ export class Home extends Screen {
 
             store.checkSupport().then(({isBillingSupported}) => {
               if(isBillingSupported) {
-                store.fetchProduct().then(({product}) => {
+                store.getProduct().then(({product}) => {
 
                   this.showPrompt(
                     'loving knobs?!', 
@@ -86,10 +86,9 @@ export class Home extends Screen {
           };
         break;
         case 'restore':
-          store.restorePurchases().then((purchases) => {
-            console.log('purchases: ', purchases);
+          store.getPurchases().then(({purchases}) => {
             purchases.forEach((purchase) => {
-              if(purchase.productIdentifier === store.premiumProductId && purchase.ownershipType === 'purchased') {
+              if(store.validatePurchase(purchase)) {
                 
                 storage.set('pro', true);
 

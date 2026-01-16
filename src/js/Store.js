@@ -9,7 +9,7 @@ class Store {
     
   };
 
-  async fetchProduct() {
+  async getProduct() {
       
     return NativePurchases.getProduct({
       productIdentifier: this.premiumProductId,
@@ -28,10 +28,18 @@ class Store {
     
   };
 
-  async restorePurchases() {
-      
-    return NativePurchases.restorePurchases();
-      
+  async getPurchases() {
+
+    return NativePurchases.getPurchases({
+      productType: PURCHASE_TYPE.INAPP
+    });
+
+  };
+
+  validatePurchase(purchase) {
+    
+    return purchase.productIdentifier === this.premiumProductId && purchase.ownershipType === 'purchased';
+
   };
   
 };
