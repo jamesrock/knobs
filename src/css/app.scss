@@ -140,7 +140,8 @@ button {
     font-weight: 800;
     font-size: 22px;
 
-    &.close {
+    &.close,
+    &[data-action="cancel"] {
       background-color: transparent;
       color: var(--prompt-foreground);
       font-weight: 700;
@@ -299,12 +300,11 @@ button {
 
   &-foot {
     position: absolute;
-    bottom: 40px;
+    bottom: 50px;
     left: 20px;
     right: 20px;
     font-size: 16px;
     text-align: center;
-    display: none;
   }
 
 }
@@ -347,7 +347,11 @@ button {
 
   &-head {
     text-align: center;
-    margin-bottom: 10px;
+    padding: 8px 0 15px;
+
+    h2 {
+      font-size: 30px;
+    }
   }
 
   &-body {

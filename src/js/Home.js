@@ -31,7 +31,7 @@ export class Home extends Screen {
       </div>\
     `;
 
-    const prompt = createNode('div', 'prompt');
+    const prompt = this.prompt = createNode('div', 'prompt');
     prompt.classList.add('pro');
     prompt.dataset.active = false;
 
@@ -44,38 +44,26 @@ export class Home extends Screen {
               if(isBillingSupported) {
                 store.fetchProduct().then(({product}) => {
 
-                  prompt.innerHTML = `\
-                    <div class="prompt-head">\
-                      <h2>loving knobs?!</h2>\
-                    </div>\
-                    <div class="prompt-body">\
-                      <p>Please consider making a small one-off contribution of ${product.priceString} to unlock all ${puzzles.length} puzzles — plus 500 new puzzles every month!</p>\
-                    </div>\
-                    <div class="prompt-foot">
-                      <button data-action="cancel" class="close">no thanks!</button>\
-                      <button data-action="gopro">continue</button>\
-                    </div>\
-                  `;
-                
-                  prompt.dataset.active = true;
+                  this.showPrompt(
+                    'loving knobs?!', 
+                    `Please consider making a small one-off contribution of ${product.priceString} to unlock all ${puzzles.length} puzzles — plus 500 new puzzles every month!`,
+                    [
+                      ['no thanks!', 'cancel'],
+                      ['continue', 'gopro']
+                    ]
+                  );
 
                 });
               }
               else {
-                
-                prompt.innerHTML = `\
-                  <div class="prompt-head">\
-                    <h2>download the app!</h2>\
-                  </div>\
-                  <div class="prompt-body">\
-                    <p>Only ${this.limit} free games are supported online. Please download the knobs app to play all levels.</p>\
-                  </div>\
-                  <div class="prompt-foot">
-                    <button data-action="cancel">close</button>\
-                  </div>\
-                `;
 
-                prompt.dataset.active = true;
+                this.showPrompt(
+                  'download the app!', 
+                  `Only ${this.limit} free games are supported online. Please download the knobs app to play all levels.`,
+                  [
+                    ['close', 'continue']
+                  ]
+                );
 
               };
             });
@@ -87,25 +75,42 @@ export class Home extends Screen {
           }
           else {
 
-            prompt.innerHTML = `\
-              <div class="prompt-head">\
-                <h2>Harry!<br />I've reached the top!</h2>\
-              </div>\
-              <div class="prompt-body">\
-                <p>You've only gone and completed ALL ${puzzles.length} puzzles! 500 new puzzles are dropped every month, on or around the 1st. Check the App Store for any updates.</p>\
-              </div>\
-              <div class="prompt-foot">
-                <button data-action="cancel">close</button>\
-              </div>\
-            `;
-          
-            prompt.dataset.active = true;
+            this.showPrompt(
+              "Harry!<br />I've reached the top!", 
+              `You've only gone and completed ALL ${puzzles.length} puzzles! 500 new puzzles are dropped every month, on or around the 1st. Check the App Store for any updates.`,
+              [
+                ['close', 'continue']
+              ]
+            );
 
           };
         break;
         case 'restore':
-          store.restorePurchases().then((bob) => {
-            console.log('purchases: ', bob);
+          store.restorePurchases().then((purchases) => {
+            console.log('purchases: ', purchases);
+            purchases.forEach((purchase) => {
+              if(purchase.productIdentifier === store.premiumProductId && purchase.ownershipType === 'purchased') {
+                
+                storage.set('pro', true);
+
+                this.showPrompt(
+                  'fully restored!', 
+                  'Thanks once again! You\'re all set.', 
+                  [
+                    ['continue', 'continue']
+                  ]
+                );
+                
+              };
+            });
+          }).catch(() => {
+            this.showPrompt(
+              'unable to restore purchases.', 
+              'Sorry. Please try again.', 
+              [
+                ['continue', 'continue']
+              ]
+            );
           });
         break;
         case 'tutorial':
@@ -123,17 +128,13 @@ export class Home extends Screen {
 
             storage.set('pro', true);
 
-            prompt.innerHTML = `\
-              <div class="prompt-head">\
-                <h2>amazing!</h2>\
-              </div>\
-              <div class="prompt-body">\
-                <p>Thank you SO much! Your small contribution makes a BIG difference. Those levels don't program themselves, after all!</p>\
-              </div>\
-              <div class="prompt-foot">
-                <button data-action="continue">continue</button>\
-              </div>\
-            `;
+            this.showPrompt(
+              'amazing!', 
+              "Thank you SO much! Your small contribution makes a BIG difference. Those levels don't program themselves, after all!",
+              [
+                ['continue', 'continue']
+              ]
+            );
 
           }).catch((error) => {
             
@@ -141,10 +142,26 @@ export class Home extends Screen {
               console.log('User cancelled the purchase');
             }
             else if(error.message.includes('Network')) {
-              alert('Network error. Please check your connection and try again.');
+
+              this.showPrompt(
+                'network error.', 
+                'Please check your connection and try again.',
+                [
+                  ['continue', 'continue']
+                ]
+              );
+              
             }
             else {
-              alert('Purchase failed. Please try again.');
+
+              this.showPrompt(
+                'purchase failed.', 
+                'Please try again.',
+                [
+                  ['continue', 'continue']
+                ]
+              );
+              
             };
 
           });
@@ -155,6 +172,25 @@ export class Home extends Screen {
     this.node.appendChild(prompt);
     this.target.appendChild(this.node);
 
+  };
+  showPrompt(heading = '{heading}', body = '{body}', actions = []) {
+    
+    this.prompt.innerHTML = `\
+      <div class="prompt-head">\
+        <h2>${heading}</h2>\
+      </div>\
+      <div class="prompt-body">\
+        <p>${body}</p>\
+      </div>\
+      <div class="prompt-foot">\
+        ${actions.map(([label, action]) => {
+          return `<button data-action="${action}">${label}</button>`;
+        }).join('')}\
+      </div>\
+    `;
+
+    this.prompt.dataset.active = true;
+    
   };
   limit = 10;
 };
