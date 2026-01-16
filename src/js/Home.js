@@ -5,6 +5,8 @@ import { storage, createNode, timeToDisplay } from './utils';
 import { puzzles } from './puzzles';
 import { store } from './Store';
 
+const restoreError = 'Your purchase cannot be verified at this time. Please try again and/or check your original transaction was successful.';
+
 export class Home extends Screen {
   constructor() {
     
@@ -42,18 +44,40 @@ export class Home extends Screen {
 
             store.checkSupport().then(({isBillingSupported}) => {
               if(isBillingSupported) {
-                store.getProduct().then(({product}) => {
 
-                  this.showPrompt(
-                    'loving knobs?!', 
-                    `Please consider making a small one-off contribution of ${product.priceString} to unlock all ${puzzles.length} puzzles — plus 500 new puzzles every month!`,
-                    [
-                      ['no thanks!', 'cancel'],
-                      ['continue', 'gopro']
-                    ]
-                  );
+                store.getPurchases().then(({purchases}) => {
+
+                  purchases.forEach((purchase) => {
+                    if(store.validatePurchase(purchase)) {
+                      storage.set('pro', true);
+                    };
+                  });
+
+                  if(storage.get('pro')) {
+                    
+                    this.destroy();
+                    new Play();
+
+                  }
+                  else {
+
+                    store.getProduct().then(({product}) => {
+
+                      this.showPrompt(
+                        'loving knobs?!', 
+                        `Please consider making a small one-off contribution of ${product.priceString} to unlock all ${puzzles.length} puzzles — plus 500 new puzzles every month!`,
+                        [
+                          ['no thanks!', 'cancel'],
+                          ['continue', 'gopro']
+                        ]
+                      );
+
+                    });
+
+                  };
 
                 });
+
               }
               else {
 
@@ -70,8 +94,10 @@ export class Home extends Screen {
 
           }
           else if(this.stats.game<puzzles.length) {
+            
             this.destroy();
             new Play();
+
           }
           else {
 
@@ -87,6 +113,11 @@ export class Home extends Screen {
         break;
         case 'restore':
           store.getPurchases().then(({purchases}) => {
+            
+            if(!purchases.length) {
+              throw new Error(restoreError);
+            };
+
             purchases.forEach((purchase) => {
               if(store.validatePurchase(purchase)) {
                 
@@ -100,16 +131,24 @@ export class Home extends Screen {
                   ]
                 );
                 
+              }
+              else {
+                
+                throw new Error(restoreError);
+
               };
             });
-          }).catch(() => {
+
+          }).catch((error) => {
+            
             this.showPrompt(
-              'unable to restore purchases.', 
-              'Sorry. Please try again.', 
+              'unable to restore purchase.', 
+              error.message, 
               [
                 ['continue', 'continue']
               ]
             );
+
           });
         break;
         case 'tutorial':
@@ -137,31 +176,13 @@ export class Home extends Screen {
 
           }).catch((error) => {
             
-            if(error.message.includes('User cancelled')) {
-              console.log('User cancelled the purchase');
-            }
-            else if(error.message.includes('Network')) {
-
-              this.showPrompt(
-                'network error.', 
-                'Please check your connection and try again.',
-                [
-                  ['continue', 'continue']
-                ]
-              );
-              
-            }
-            else {
-
-              this.showPrompt(
-                'purchase failed.', 
-                'Please try again.',
-                [
-                  ['continue', 'continue']
-                ]
-              );
-              
-            };
+            this.showPrompt(
+              'purchase failed.', 
+              `${error.message}. Please try again.`,
+              [
+                ['continue', 'continue']
+              ]
+            );
 
           });
         break;
