@@ -26,7 +26,7 @@ export class Home extends Screen {
         <div>${this.stats.game} / ${puzzles.length}</div>\
         <div>PB ${this.stats.best ? timeToDisplay(this.stats.best) : '-'}</div>\
       </div>\
-      <div class="home-screen-foot">\
+      <div class="home-screen-foot" data-visible="${!storage.get('pro')}">\
         <button data-action="restore" class="close restore">restore purchase</button>\
       </div>\
     `;

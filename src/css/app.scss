@@ -305,6 +305,10 @@ button {
     right: 20px;
     font-size: 16px;
     text-align: center;
+
+    &[data-visible="false"] {
+      display: none;
+    }
   }
 
 }
