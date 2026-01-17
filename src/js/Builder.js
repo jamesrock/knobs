@@ -163,6 +163,10 @@ export class Builder extends Screen {
 
     });
 
+    output.addEventListener('focus', () => {
+      navigator.clipboard.writeText(output.value);
+    });
+
     inputs.appendChild(modeSelect);
     inputs.appendChild(puzzleSelect);
     inputs.appendChild(undoButton);
