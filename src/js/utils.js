@@ -20,6 +20,7 @@ export const shuffle = array => {
   };
   return array;
 };
+const formatter = new Intl.NumberFormat('en-GB');
 const timeToMinutes = (time) => Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
 const timeToSeconds = (time) => Math.floor((time % (1000 * 60)) / 1000);
 const pad = (time) => time.toString().padStart(2, '0');
@@ -29,6 +30,7 @@ export const getRandomIndex = (target) => Math.floor(Math.random() * target.leng
 export const getRandom = (target) => target[getRandomIndex(target)];
 export const limit = (value, max) => value > max ? max : value;
 export const isTiny = () => !window.matchMedia('(min-width: 450px)').matches;
+export const formatNumber = n => formatter.format(n);
 export const storage = new Storage('me.jamesrock.knobs');
 export const colors = [
   ['purple', 'rgb(184, 23, 255)'],

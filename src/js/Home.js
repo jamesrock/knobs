@@ -1,7 +1,7 @@
 import { Play } from './Play';
 import { Tutorial } from './Tutorial';
 import { Screen } from './Screen';
-import { storage, createNode, timeToDisplay } from './utils';
+import { storage, createNode, timeToDisplay, formatNumber } from './utils';
 import { puzzles } from './puzzles';
 import { store } from './Store';
 
@@ -25,7 +25,7 @@ export class Home extends Screen {
         <button data-action="tutorial">tutorial</button>\
       </div>\
       <div class="stats">\
-        <div>${this.stats.game} / ${puzzles.length}</div>\
+        <div>${formatNumber(this.stats.game)} / ${formatNumber(puzzles.length)}</div>\
         <div>PB ${this.stats.best ? timeToDisplay(this.stats.best) : '-'}</div>\
       </div>\
       <div class="home-screen-foot" data-visible="${!storage.get('pro')}">\
