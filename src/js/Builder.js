@@ -1,5 +1,5 @@
 import { Screen } from './Screen';
-import { createButton, createNode, colors } from './utils';
+import { createButton, createNode, colors, formatNumber } from './utils';
 import { puzzles } from './puzzles';
 
 const preventDefaults = (e) => {
@@ -104,7 +104,7 @@ export class Builder extends Screen {
       });
     });
 
-    status.innerText = `COUNT: ${puzzles.length}. ${puzzles.length%24 === 0 ? 'ALL GOOD' : `MISSING: ${24-(puzzles.length%24)}`}!`;
+    status.innerText = `COUNT: ${formatNumber(puzzles.length)}. ${puzzles.length%24 === 0 ? 'ALL GOOD' : `MISSING: ${24-(puzzles.length%24)}`}!`;
 
     this.target.classList.add('builder-screen');
 
