@@ -450,10 +450,10 @@ button,
   .nudge {
     position: absolute;
     inset: 0;
-    border: solid 100px red;
+    border: solid 120px red;
     opacity: 0.25;
-    top: -100px;
-    left: -100px;
+    top: -120px;
+    left: -120px;
 
     &.good {
       border-color: green;
