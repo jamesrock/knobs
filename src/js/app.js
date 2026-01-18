@@ -20,15 +20,19 @@ if(!stats) {
   setStats();
 };
 
-if(mode==='build') {
-  new Builder();
-}
-else if(mode==='check') {
-  new Checker();
-}
-else if(mode==='icon') {
-  new Icon();
-}
-else {
-  new Home();
+const screens = {
+  play: () => {
+    new Home();
+  },
+  build: () => {
+    new Builder();
+  },
+  check: () => {
+    new Checker();
+  },
+  icon: () => {
+    new Icon();  
+  }
 };
+
+screens[mode]();
