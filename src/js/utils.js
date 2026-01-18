@@ -42,8 +42,7 @@ export const createInput = (value = 0) => {
 };
 export const createOutput = () => {
   const textarea = document.createElement('textarea');
-  textarea.rows = 10;
-  textarea.cols = 80;
+  textarea.rows = 7;
   return textarea;
 };
 export const createContainer = (className = '') => {
