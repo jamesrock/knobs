@@ -10,7 +10,7 @@ export const getRandomIndex = (target) => Math.floor(Math.random() * target.leng
 export const getRandom = (target) => target[getRandomIndex(target)];
 export const limit = (value, max) => value > max ? max : value;
 export const isTiny = () => !window.matchMedia('(min-width: 450px)').matches;
-export const formatNumber = n => formatter.format(n);
+export const formatNumber = (n) => formatter.format(n);
 export const storage = new Storage('me.jamesrock.knobs');
 export const colors = [
   ['purple', 'rgb(184, 23, 255)'],
@@ -63,7 +63,7 @@ const createOption = (label = '', value = '') => {
   node.value = value;
   return node;
 };
-export const shuffle = array => {
+export const shuffle = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     const temp = array[i];
