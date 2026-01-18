@@ -1,5 +1,6 @@
 import { Screen } from './Screen';
 import { createButton, createNode, colors } from './utils';
+import { puzzles } from './puzzles';
 
 const preventDefaults = (e) => {
   e.preventDefault();
@@ -51,6 +52,7 @@ export class Builder extends Screen {
 
     const board = this.node = createContainer('builder');
     const nudge = this.nudge = createContainer('nudge');
+    const status = this.status = createNode('h1', 'status');
     const inputs = createContainer('inputs');
     const outputs = createContainer('outputs');
     const modeSelect = this.modeSelect = createSelect(this.modes);
@@ -101,6 +103,10 @@ export class Builder extends Screen {
         this.starButtons.push(btn);
       });
     });
+
+    status.innerText = `COUNT: ${puzzles.length}. ${puzzles.length%24 === 0 ? 'ALL GOOD' : `MISSING: ${24-(puzzles.length%24)}`}!`;
+
+    this.target.classList.add('builder-screen');
 
     positionX.addEventListener('input', changeHandler);
     positionY.addEventListener('input', changeHandler);
@@ -176,6 +182,7 @@ export class Builder extends Screen {
 
     outputs.appendChild(output);
     
+    this.target.appendChild(status);
     this.target.appendChild(nudge);
     this.target.appendChild(board);
     this.target.appendChild(inputs);

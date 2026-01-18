@@ -121,7 +121,8 @@ textarea {
   border: 0;
 }
 
-button {
+button,
+.knob {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -168,7 +169,6 @@ button {
   border: solid 8px black;
   position: absolute;
   box-sizing: border-box;
-  cursor: pointer;
   transition: all .5s;
   border-radius: 100%;
   color: white;
@@ -176,7 +176,6 @@ button {
   font-weight: 800;
   border-color: var(--box-off);
   background-color: var(--box-off);
-  -webkit-tap-highlight-color: transparent;
 
   @media (min-width: 600px) {
     border-width: 10px;
@@ -243,6 +242,10 @@ button {
 
   &[data-visible="false"][data-state="off"] {
     transform: rotate(-180deg) scale(0);
+  }
+
+  &.star {
+    background-color: black;
   }
 
   &:before,
@@ -431,20 +434,7 @@ button {
   &[data-state="disabled"] {
     display: none;
   }
-}
 
-.builder {
-  position: relative;
-  margin-bottom: 40px;
-
-  .knob {
-
-    &.star {
-      background-color: black;
-    }
-
-  }
-  
 }
 
 .checker-screen {
@@ -455,16 +445,32 @@ button {
   padding: 40px 0;
 }
 
-.nudge {
-  position: absolute;
-  inset: 0;
-  border: solid 100px red;
-  opacity: 0.25;
-  top: -100px;
-  left: -100px;
+.builder-screen {
+  
+  .nudge {
+    position: absolute;
+    inset: 0;
+    border: solid 100px red;
+    opacity: 0.25;
+    top: -100px;
+    left: -100px;
 
-  &.good {
-    border-color: green;
+    &.good {
+      border-color: green;
+    }
+
+  }
+
+  .status {
+    position: fixed;
+    top: 40px;
+    left: 40px;
+    font-size: 22px;
+  }
+
+  .builder {
+    position: relative;
+    margin-bottom: 40px;
   }
 
 }
