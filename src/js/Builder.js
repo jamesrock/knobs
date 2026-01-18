@@ -1,45 +1,16 @@
 import { Screen } from './Screen';
-import { createButton, createNode, colors, formatNumber } from './utils';
 import { puzzles } from './puzzles';
-
-const preventDefaults = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-};
-
-const createInput = (value = 0) => {
-  const input = document.createElement('input');
-  input.type = 'number';
-  input.value = value;
-  return input;
-};
-
-const createOutput = () => {
-  const textarea = document.createElement('textarea');
-  textarea.rows = 10;
-  textarea.cols = 80;
-  return textarea;
-};
-
-const createContainer = (className = '') => {
-  return createNode('div', className);
-};
-
-const createSelect = (options) => {
-  const node = document.createElement('select');
-  options.forEach(([label, value]) => {
-    const option = createOption(label, value);
-    node.appendChild(option);
-  })
-  return node;
-};
-
-const createOption = (label = '', value = '') => {
-  const node = document.createElement('option');
-  node.innerText = label;
-  node.value = value;
-  return node;
-};
+import { 
+  colors,
+  formatNumber,
+  preventDefaults,
+  createNode,
+  createButton,
+  createInput,
+  createOutput,
+  createContainer,
+  createSelect
+} from './utils';
 
 export class Builder extends Screen {
 	constructor() {
@@ -63,16 +34,15 @@ export class Builder extends Screen {
     const dropZone = this.dropZone = document.querySelector('body');
     const output = this.output = createOutput();
     const undoButton = createButton('undo');
+    const size = (this.space * (this.looper.length-1));
     const changeHandler = () => {
       dropZone.style.backgroundPosition = `calc(50% + ${positionX.value}px) calc(50% + ${positionY.value}px)`;
     };
 
     let knobs = [];
 
-    board.style.width = board.style.height = `${this.space * (this.looper.length-1)}px`;
-    nudge.style.width = nudge.style.height = `${this.space * (this.looper.length-1)}px`;
-
-    this.target.style.position = 'relative';
+    board.style.width = board.style.height = `${size}px`;
+    nudge.style.width = nudge.style.height = `${size}px`;
 
     this.starLooper.forEach((y) => {
       this.starLooper.forEach((x) => {
