@@ -124,7 +124,7 @@ export class Puzzle {
 		};
 		if(!this.randomColors) {
 			const oranges = this.tiles.filter((tile) => {
-				return tile.b===4;
+				return tile.b===4&&tile.state==='off';
 			}).length;
 			if(oranges===3) {
 				this.solvedHandler(true);
