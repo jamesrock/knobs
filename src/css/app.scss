@@ -91,6 +91,23 @@ body {
   overflow: auto !important;
 }
 
+.wordy {
+  main {
+    max-width: 500px;
+    text-align: center;
+    p {
+      margin: 1em 0;
+      a {
+        text-decoration: none;
+        color: fuchsia;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
 h1 {
   font-size: 2.5em;
   text-align: center;
