@@ -147,6 +147,8 @@ button,
 .home-screen,
 .play-screen,
 .tutorial-screen {
+  display: flex;
+  flex-direction: column;
 
   button {
     border: 0;
@@ -167,7 +169,49 @@ button,
       padding: 8px 15px;
     }
 
-    &.restore {
+  }
+
+}
+
+.home-screen {
+  gap: 20px;
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .stats {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 800;
+    opacity: 0.4;
+    line-height: 1.2;
+  }
+
+  &-foot {
+    position: absolute;
+    bottom: 50px;
+    left: 20px;
+    right: 20px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    &[data-visible="false"] {
+      display: none;
+    }
+
+    button {
+      background-color: transparent;
+      color: var(--prompt-foreground);
+      font-weight: 700;
+      padding: 0;
       font-size: 16px;
       opacity: 0.25;
     }
@@ -176,10 +220,71 @@ button,
 
 }
 
-.inputs {
+.play-screen,
+.tutorial-screen {
+  align-items: center;
+  gap: 40px;
+
+  h1 {
+    font-size: 2em;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+}
+
+.tutorial-screen {
+  padding-bottom: 150px;
+}
+
+.checker-screen {
+  width: 1140px;
   display: flex;
-  gap: 5px;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 40px 0;
+}
+
+.builder-screen {
   position: relative;
+
+  .nudge {
+    position: absolute;
+    inset: 0;
+    border: solid 120px red;
+    opacity: 0.25;
+    top: -120px;
+    left: -120px;
+
+    &.good {
+      border-color: green;
+    }
+
+  }
+
+  .status {
+    position: fixed;
+    top: 0;
+    left: 0;
+    font-size: 22px;
+    background-color: white;
+    padding: 20px;
+  }
+
+  .builder {
+    position: relative;
+    margin-bottom: 40px;
+  }
+
+  .inputs {
+    display: flex;
+    gap: 5px;
+    position: relative;
+  }
+
 }
 
 .knob {
@@ -297,64 +402,6 @@ button,
   position: relative;
 }
 
-.home-screen {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
-  .buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .stats {
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    font-weight: 800;
-    opacity: 0.4;
-    line-height: 1.2;
-  }
-
-  &-foot {
-    position: absolute;
-    bottom: 50px;
-    left: 20px;
-    right: 20px;
-    font-size: 16px;
-    text-align: center;
-
-    &[data-visible="false"] {
-      display: none;
-    }
-  }
-
-}
-
-.play-screen,
-.tutorial-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
-
-  h1 {
-    font-size: 2em;
-  }
-
-  .buttons {
-    display: flex;
-    gap: 10px;
-  }
-  
-}
-
-.tutorial-screen {
-  padding-bottom: 150px;
-}
-
 .prompt {
   position: absolute;
   bottom: 40px;
@@ -450,47 +497,6 @@ button,
 
   &[data-state="disabled"] {
     display: none;
-  }
-
-}
-
-.checker-screen {
-  width: 1140px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-  padding: 40px 0;
-}
-
-.builder-screen {
-  position: relative;
-  
-  .nudge {
-    position: absolute;
-    inset: 0;
-    border: solid 120px red;
-    opacity: 0.25;
-    top: -120px;
-    left: -120px;
-
-    &.good {
-      border-color: green;
-    }
-
-  }
-
-  .status {
-    position: fixed;
-    top: 0;
-    left: 0;
-    font-size: 22px;
-    background-color: white;
-    padding: 20px;
-  }
-
-  .builder {
-    position: relative;
-    margin-bottom: 40px;
   }
 
 }

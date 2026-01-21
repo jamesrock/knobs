@@ -5,8 +5,6 @@ import { storage, createNode, timeToDisplay, formatNumber } from './utils';
 import { puzzles } from './puzzles';
 import { store } from './Store';
 
-const restoreError = 'Your purchase cannot be verified at this time. Please try again and/or check your original transaction was successful.';
-
 export class Home extends Screen {
   constructor() {
     
@@ -29,7 +27,7 @@ export class Home extends Screen {
         <div>PB ${this.stats.best ? timeToDisplay(this.stats.best) : '-'}</div>\
       </div>\
       <div class="home-screen-foot" data-visible="${!storage.get('pro')}">\
-        <button data-action="restore" class="close restore">restore purchase</button>\
+        <button data-action="restore" class="restore">go pro&nbsp;&nbsp;|&nbsp;&nbsp;restore</button>\
       </div>\
     `;
 
@@ -42,55 +40,7 @@ export class Home extends Screen {
         case 'play':
           if(this.stats.game>=this.limit && !storage.get('pro')) {
 
-            store.checkSupport().then(({isBillingSupported}) => {
-              if(isBillingSupported) {
-
-                store.getPurchases().then(({purchases}) => {
-
-                  purchases.forEach((purchase) => {
-                    if(store.validatePurchase(purchase)) {
-                      storage.set('pro', true);
-                    };
-                  });
-
-                  if(storage.get('pro')) {
-                    
-                    this.destroy();
-                    new Play();
-
-                  }
-                  else {
-
-                    store.getProduct().then(({product}) => {
-
-                      this.showPrompt(
-                        'loving knobs?!', 
-                        `Please consider making a small one-off contribution of ${product.priceString} to unlock all ${puzzles.length} puzzles — plus 500 new puzzles every month!`,
-                        [
-                          ['no thanks!', 'cancel'],
-                          ['continue', 'gopro']
-                        ]
-                      );
-
-                    });
-
-                  };
-
-                });
-
-              }
-              else {
-
-                this.showPrompt(
-                  'download the app!', 
-                  `Only ${this.limit} free games are supported online. Please download the knobs app to play all levels.`,
-                  [
-                    ['close', 'continue']
-                  ]
-                );
-
-              };
-            });
+            this.restore();
 
           }
           else if(this.stats.game<puzzles.length) {
@@ -112,44 +62,9 @@ export class Home extends Screen {
           };
         break;
         case 'restore':
-          store.getPurchases().then(({purchases}) => {
-            
-            if(!purchases.length) {
-              throw new Error(restoreError);
-            };
 
-            purchases.forEach((purchase) => {
-              if(store.validatePurchase(purchase)) {
-                
-                storage.set('pro', true);
+          this.restore(true);
 
-                this.showPrompt(
-                  'fully restored!', 
-                  'Thanks once again! You\'re all set.', 
-                  [
-                    ['continue', 'continue']
-                  ]
-                );
-                
-              }
-              else {
-                
-                throw new Error(restoreError);
-
-              };
-            });
-
-          }).catch((error) => {
-            
-            this.showPrompt(
-              'unable to restore purchase.', 
-              error.message, 
-              [
-                ['continue', 'continue']
-              ]
-            );
-
-          });
         break;
         case 'tutorial':
           this.destroy();
@@ -210,6 +125,86 @@ export class Home extends Screen {
     `;
 
     this.prompt.dataset.active = true;
+    
+  };
+  restore(verbose = false) {
+
+    store.checkSupport().then(({isBillingSupported}) => {
+      if(isBillingSupported) {
+
+        store.getPurchases().then(({purchases}) => {
+
+          purchases.forEach((purchase) => {
+            if(store.validatePurchase(purchase)) {
+              storage.set('pro', true);
+            };
+          });
+
+          if(storage.get('pro')) {
+
+            if(verbose) {
+              
+              this.showPrompt(
+                'fully restored!', 
+                'Thanks once again! You\'re all set.', 
+                [
+                  ['continue', 'continue']
+                ]
+              );
+
+            }
+            else {
+              
+              this.destroy();
+              new Play();
+
+            };
+
+          }
+          else {
+
+            store.getProduct().then(({product}) => {
+
+              this.showPrompt(
+                'loving knobs?!', 
+                `Please consider making a small one-off contribution of ${product.priceString} to unlock all ${formatNumber(puzzles.length)} puzzles — plus 500 new puzzles every month!`,
+                [
+                  ['no thanks!', 'cancel'],
+                  ['continue', 'gopro']
+                ]
+              );
+
+            });
+
+          };
+
+        }).catch(() => {
+
+          if(verbose) {
+            this.showPrompt(
+              'unable to restore purchase.', 
+              'Your purchase cannot be verified at this time. Please try again and/or check your original transaction was successful.', 
+              [
+                ['continue', 'continue']
+              ]
+            );
+          };
+
+        });
+
+      }
+      else {
+
+        this.showPrompt(
+          'download the app!', 
+          `Only ${this.limit} free games are supported online. Please download the knobs app to play all levels.`,
+          [
+            ['close', 'continue']
+          ]
+        );
+
+      };
+    });
     
   };
   limit = 10;
