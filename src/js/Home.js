@@ -27,7 +27,7 @@ export class Home extends Screen {
         <div>PB ${this.stats.best ? timeToDisplay(this.stats.best) : '-'}</div>\
       </div>\
       <div class="home-screen-foot" data-visible="${!storage.get('pro')}">\
-        <button data-action="restore" class="restore">go pro&nbsp;&nbsp;|&nbsp;&nbsp;restore</button>\
+        <button data-action="restore">go pro&nbsp;&nbsp;|&nbsp;&nbsp;restore</button>\
       </div>\
     `;
 
