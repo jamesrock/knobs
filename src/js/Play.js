@@ -1,4 +1,4 @@
-import { createNode, timeToDisplay } from '@jamesrock/rockjs';
+import { createNode, formatTime } from '@jamesrock/rockjs';
 import { Puzzle } from './Puzzle';
 import { Home } from './Home';
 import { Screen } from './Screen';
@@ -90,7 +90,7 @@ export class Play extends Screen {
     <div class="solved-body">\
       <h2>knobs ${this.puzzle.id}</h2>\
       <h3>solved!</h3>\
-      <p class="time">Time: ${timeToDisplay(time)}</p>\
+      <p class="time">Time: ${formatTime(time)}</p>\
       <p class="continue">Tap to continue.</p>\
     </div>`;
     setTimeout(() => {

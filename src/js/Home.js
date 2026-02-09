@@ -1,4 +1,4 @@
-import { createNode, timeToDisplay, formatNumber } from '@jamesrock/rockjs';
+import { createNode, formatTime, formatNumber } from '@jamesrock/rockjs';
 import { Play } from './Play';
 import { Tutorial } from './Tutorial';
 import { Screen } from './Screen';
@@ -25,7 +25,7 @@ export class Home extends Screen {
       </div>\
       <div class="stats">\
         <div>${formatNumber(this.stats.game)} / ${formatNumber(puzzles.length)}</div>\
-        <div>PB ${this.stats.best ? timeToDisplay(this.stats.best) : '-'}</div>\
+        <div>PB ${this.stats.best ? formatTime(this.stats.best) : '-'}</div>\
       </div>\
       <div class="home-screen-foot" data-visible="${!storage.get('pro')}">\
         <button data-action="restore">go pro&nbsp;&nbsp;|&nbsp;&nbsp;restore</button>\
