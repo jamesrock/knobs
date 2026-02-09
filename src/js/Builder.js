@@ -1,16 +1,15 @@
-import { Screen } from './Screen';
-import { puzzles } from './puzzles';
 import { 
-  colors,
   formatNumber,
-  preventDefaults,
   createNode,
   createButton,
   createInput,
   createOutput,
   createContainer,
   createSelect
-} from './utils';
+} from '@jamesrock/rockjs';
+import { Screen } from './Screen';
+import { puzzles } from './puzzles';
+import { colors, preventDefaults } from './utils';
 
 export class Builder extends Screen {
 	constructor() {

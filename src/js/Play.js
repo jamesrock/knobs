@@ -1,8 +1,9 @@
+import { createNode, timeToDisplay } from '@jamesrock/rockjs';
 import { Puzzle } from './Puzzle';
 import { Home } from './Home';
 import { Screen } from './Screen';
 import { puzzles } from './puzzles';
-import { createNode, timeToDisplay, storage } from './utils';
+import { storage } from './utils';
 
 export class Play extends Screen {
   constructor() {

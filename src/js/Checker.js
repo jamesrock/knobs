@@ -1,6 +1,6 @@
+import { createNode } from '@jamesrock/rockjs';
 import { Screen } from './Screen';
 import { Puzzle } from './Puzzle';
-import { storage, createNode } from './utils';
 import { puzzles } from './puzzles';
 
 export class Checker extends Screen {

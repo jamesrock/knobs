@@ -1,7 +1,8 @@
+import { createNode, createButton } from '@jamesrock/rockjs';
 import { Puzzle } from './Puzzle';
 import { Home } from './Home';
 import { Screen } from './Screen';
-import { createNode, createButton, storage } from './utils';
+import { storage } from './utils';
 
 export class Tutorial extends Screen {
   constructor() {

@@ -1,5 +1,5 @@
+import { createNode } from '@jamesrock/rockjs';
 import { Screen } from './Screen';
-import { storage, createNode } from './utils';
 
 export class Icon extends Screen {
   constructor() {

@@ -1,5 +1,6 @@
+import { makeEven, limit, isTiny, createNode, shuffle } from '@jamesrock/rockjs';
 import { puzzles } from './puzzles';
-import { makeEven, limit, storage, isTiny, createNode, colors, shuffle } from './utils';
+import { storage, colors } from './utils';
 
 export class Puzzle {
 	constructor(selector, solvedHandler, saved = -1) {
