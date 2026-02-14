@@ -1,3 +1,4 @@
+import '../css/app.css';
 import { Builder } from './Builder';
 import { Home } from './Home';
 import { Checker } from './Checker';
