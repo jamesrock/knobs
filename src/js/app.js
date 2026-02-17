@@ -1,9 +1,12 @@
 import '../css/app.css';
+import { setDocumentHeight } from '@jamesrock/rockjs';
 import { Builder } from './Builder';
 import { Home } from './Home';
 import { Checker } from './Checker';
 import { Icon } from './Icon';
 import { storage } from './utils';
+
+setDocumentHeight();
 
 const stats = storage.get('stats');
 const mode = 'play'; // 'check', 'icon', 'build', 'play'
