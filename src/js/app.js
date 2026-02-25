@@ -1,4 +1,4 @@
-import '../css/app.css';
+import '/css/app.css';
 import { setDocumentHeight } from '@jamesrock/rockjs';
 import { Builder } from './Builder';
 import { Home } from './Home';
