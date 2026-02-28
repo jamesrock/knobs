@@ -1,4 +1,6 @@
 import {
+  pad,
+  floorTo,
   formatNumber,
   getLast,
   makeNode,
@@ -15,6 +17,7 @@ import { colors } from './utils';
 
 const START = 44;
 const END = 70;
+const COUNT = 24;
 
 const xValues = [
   1950,
@@ -61,7 +64,7 @@ const positions = [
   [1, 6],
   [2, 6],
   [3, 6]
-].map(([x, y]) => [xValues[x], yValues[y]]);
+].map(([x, y]) => [xValues[x], yValues[y] + 12]);
 
 const sets = makeArray((END + 1) - START).map((index) => {
   return START + index;
@@ -137,7 +140,7 @@ export class Builder extends Screen {
       });
     });
 
-    status.innerText = `COUNT: ${formatNumber(puzzles.length)}. ${puzzles.length%24 === 0 ? 'ALL GOOD' : `MISSING: ${24-(puzzles.length%24)}`}!`;
+    status.innerHTML = `COUNT: ${formatNumber(puzzles.length)}. ${puzzles.length % COUNT === 0 ? 'ALL GOOD' : `MISSING: ${COUNT - (puzzles.length % COUNT)}`}! ${floorTo(puzzles.length / COUNT)}:${pad(puzzles.length % COUNT)}`;
 
     this.target.classList.add('builder-screen');
 

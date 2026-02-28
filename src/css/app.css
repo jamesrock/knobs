@@ -104,8 +104,7 @@ h3 {
 
 select,
 input,
-textarea,
-button {
+textarea {
   font-size: inherit;
   font-family: inherit;
 }
@@ -269,16 +268,23 @@ button,
     gap: 5px;
     position: relative;
     align-items: center;
+    position: absolute;
   }
 
-  select,
-  button {
+  button,
+  select {
     padding: 0 10px;
+    font-size: inherit;
     font-weight: inherit;
   }
 
   button {
-    padding: 5px 10px;
+    padding: 5px 15px;
+    background-color: magenta;
+    border: 0;
+    color: white;
+    border-radius: 6px;
+    font-weight: 800;
   }
 
 }
