@@ -1,15 +1,70 @@
-import { 
+import {
   formatNumber,
   createNode,
   createButton,
   createInput,
   createOutput,
   createContainer,
-  createSelect
+  createSelect,
+  makeArray
 } from '@jamesrock/rockjs';
 import { Screen } from './Screen';
 import { puzzles } from './puzzles';
-import { colors, preventDefaults } from './utils';
+import { colors } from './utils';
+
+const START = 44;
+const END = 70;
+
+const xValues = [
+  1950,
+  780,
+  -393,
+  -1567,
+];
+
+const yValues = [
+  1820,
+  890,
+  -37,
+  -966,
+  -1894,
+  -2823
+];
+
+const positions = [
+  [0, 0],
+  [1, 0],
+  [2, 0],
+  [3, 0],
+  [0, 1],
+  [1, 1],
+  [2, 1],
+  [3, 1],
+  [0, 2],
+  [1, 2],
+  [2, 2],
+  [3, 2],
+  [0, 3],
+  [1, 3],
+  [2, 3],
+  [3, 3],
+  [0, 4],
+  [1, 4],
+  [2, 4],
+  [3, 4],
+  [0, 5],
+  [1, 5],
+  [2, 5],
+  [3, 5],
+  [0, 6],
+  [1, 6],
+  [2, 6],
+  [3, 6]
+].map(([x, y]) => [xValues[x], yValues[y]]);
+
+const sets = makeArray((END + 1) - START).map((index) => {
+  return START + index;
+});
 
 export class Builder extends Screen {
 	constructor() {
@@ -26,19 +81,30 @@ export class Builder extends Screen {
     const inputs = createContainer('inputs');
     const outputs = createContainer('outputs');
     const modeSelect = this.modeSelect = createSelect(this.modes);
-    const puzzleSelect = this.puzzleSelect = createSelect(this.positions.map(([label], value) => [label, value]));
-    const positionX = this.positionX = createInput(this.positions[0][1]);
-    const positionY = this.positionY = createInput(this.positions[0][2]);
+    const setSelect = this.setSelect = createSelect(sets.map((value) => [`#${value}`, value]));
+    const puzzleSelect = this.puzzleSelect = createSelect(makeArray(24).map((item, index) => [`#${index+1}`, index]));
+    const positionX = this.positionX = createInput(this.answerPositions[0][0]);
+    const positionY = this.positionY = createInput(this.answerPositions[0][1]);
+    const backgroundSize = this.backgroundSize = createInput(500);
     const space = createInput(this.space);
     const dropZone = this.dropZone = document.querySelector('body');
     const output = this.output = createOutput();
     const undoButton = createButton('undo');
     const size = (this.space * (this.looper.length-1));
-    const changeHandler = () => {
+    const positionChangeHandler = () => {
+      // dropZone.style.backgroundPosition = `calc(50% + ${positionX.value}px) calc(50% + ${positionY.value}px)`;
       dropZone.style.backgroundPosition = `calc(50% + ${positionX.value}px) calc(50% + ${positionY.value}px)`;
+      dropZone.style.backgroundSize = `${backgroundSize.value}% auto`;
+    };
+    const puzzleChangeHandler = () => {
+      this.reset();
     };
 
     let knobs = [];
+
+    // positionX.step = 10;
+    // positionY.step = 10;
+    backgroundSize.step = 10;
 
     board.style.width = board.style.height = `${size}px`;
     nudge.style.width = nudge.style.height = `${size}px`;
@@ -77,11 +143,12 @@ export class Builder extends Screen {
 
     this.target.classList.add('builder-screen');
 
-    positionX.addEventListener('input', changeHandler);
-    positionY.addEventListener('input', changeHandler);
-    puzzleSelect.addEventListener('input', () => {
-      this.reset();
-    });
+    positionX.addEventListener('input', positionChangeHandler);
+    positionY.addEventListener('input', positionChangeHandler);
+    backgroundSize.addEventListener('input', positionChangeHandler);
+    setSelect.addEventListener('input', puzzleChangeHandler);
+    puzzleSelect.addEventListener('input', puzzleChangeHandler);
+
     space.addEventListener('input', () => {
       board.style.width = board.style.height = `${space.value * (this.looper.length-1)}px`;
     });
@@ -90,24 +157,6 @@ export class Builder extends Screen {
     });
     undoButton.addEventListener('click', () => {
       this.undo();
-    });
-
-    dropZone.addEventListener('dragover', preventDefaults);
-    dropZone.addEventListener('dragenter', preventDefaults);
-    dropZone.addEventListener('dragleave', preventDefaults);
-    dropZone.addEventListener('drop', (e) => {
-      
-      e.preventDefault();
-
-      const reader = new FileReader();
-
-      reader.onloadend = (e) => {
-        dropZone.style.backgroundImage = `url(${e.target.result})`;
-        this.reset(true);
-      };
-
-      reader.readAsDataURL(e.dataTransfer.files[0]);
-
     });
 
     board.addEventListener('touchstart', () => {
@@ -142,27 +191,29 @@ export class Builder extends Screen {
       navigator.clipboard.writeText(output.value);
     });
 
-    inputs.appendChild(modeSelect);
-    inputs.appendChild(puzzleSelect);
-    inputs.appendChild(undoButton);
-    // inputs.appendChild(positionX);
-    // inputs.appendChild(positionY);
-    // inputs.appendChild(space);
+    inputs.append(modeSelect);
+    inputs.append(setSelect);
+    inputs.append(puzzleSelect);
+    inputs.append(undoButton);
+    inputs.append(positionX);
+    inputs.append(positionY);
+    inputs.append(backgroundSize);
+    // inputs.append(space);
 
-    outputs.appendChild(output);
-    
-    this.target.appendChild(status);
-    this.target.appendChild(nudge);
-    this.target.appendChild(board);
-    this.target.appendChild(inputs);
-    this.target.appendChild(outputs);
+    outputs.append(output);
+
+    this.target.append(status);
+    this.target.append(nudge);
+    this.target.append(board);
+    this.target.append(inputs);
+    this.target.append(outputs);
 
     this.setColors();
     this.reset();
 
 	};
   reset(hard = false) {
-    
+
     this.stars = [
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
@@ -205,7 +256,7 @@ export class Builder extends Screen {
 
   };
   renderOutput(write = true) {
-    
+
     if(write) {
       this.history.push(JSON.stringify([this.stars, this.map]));
     };
@@ -214,15 +265,19 @@ export class Builder extends Screen {
   };
   renderPuzzle() {
 
-    this.dropZone.style.backgroundPosition = `calc(50% + ${this.positions[this.puzzleSelect.value][1]}px) calc(50% + ${this.positions[this.puzzleSelect.value][2]}px)`;
-    this.positionX.value = this.positions[this.puzzleSelect.value][1];
-    this.positionY.value = this.positions[this.puzzleSelect.value][2];
+    // this.dropZone.style.backgroundPosition = `calc(50% + ${this.positions[this.puzzleSelect.value][1]}px) calc(50% + ${this.positions[this.puzzleSelect.value][2]}px)`;
+    this.dropZone.style.backgroundImage = `url(/puzzles/${this.setSelect.value}-answers.png)`;
+    this.dropZone.style.backgroundPosition = `calc(50% + ${this.answerPositions[this.puzzleSelect.value][0]}px) calc(50% + ${this.answerPositions[this.puzzleSelect.value][1]}px)`;
+    this.dropZone.style.backgroundSize = `${this.backgroundSize.value}% auto`;
+
+    this.positionX.value = this.answerPositions[this.puzzleSelect.value][0];
+    this.positionY.value = this.answerPositions[this.puzzleSelect.value][1];
 
     return this;
 
   };
   undo() {
-    
+
     this.history.pop();
 
     const previous = JSON.parse(this.history[this.history.length-1]);
@@ -232,13 +287,13 @@ export class Builder extends Screen {
 
   };
   set(knob, value, force = false) {
-    
+
     if(force || knob.dataset.state==='off') {
       this.map[knob.dataset.value] = value;
       knob.dataset.box = value;
       knob.dataset.state = 'on';
     };
-    
+
     return this;
 
   };
@@ -254,12 +309,7 @@ export class Builder extends Screen {
   looper = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   starLooper = [0, 1, 2, 3, 4, 5, 6, 7];
   modes = [...colors.map(([name], index) => [name, index]), ['stars', 'stars']];
-  positions = [
-    ['#1', '437', '373'],
-    ['#2', '-466', '311'],
-    ['#3', '437', '-462'],
-    ['#4', '-465', '-523']
-  ];
+  answerPositions = positions;
   starButtons = [];
   box = 0;
   stars = [];
