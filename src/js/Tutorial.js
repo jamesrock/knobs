@@ -1,4 +1,4 @@
-import { createNode, createButton } from '@jamesrock/rockjs';
+import { makeNode, makeButton } from '@jamesrock/rockjs';
 import { Puzzle } from './Puzzle';
 import { Home } from './Home';
 import { Screen } from './Screen';
@@ -6,19 +6,19 @@ import { storage } from './utils';
 
 export class Tutorial extends Screen {
   constructor() {
-    
+
     super();
     this.render();
 
   };
   render() {
 
-    this.node = createNode('div', 'tutorial-screen');
-    const prompt = this.prompt = createNode('div', 'prompt');
-    const nextButton = this.nextButton = createButton('next', 'next');
-    const closeButton = createButton('close', 'close');
-    const promptBody = this.promptBody = createNode('div', 'prompt-body');
-    const promptFoot = createNode('div', 'prompt-foot');
+    this.node = makeNode('div', 'tutorial-screen');
+    const prompt = this.prompt = makeNode('div', 'prompt');
+    const nextButton = this.nextButton = makeButton('next', 'next');
+    const closeButton = makeButton('close', 'close');
+    const promptBody = this.promptBody = makeNode('div', 'prompt-body');
+    const promptFoot = makeNode('div', 'prompt-foot');
 
     this.node.innerHTML = `\
       <h1>knobs tutorial</h1>\
@@ -26,7 +26,7 @@ export class Tutorial extends Screen {
     `;
 
     nextButton.addEventListener('click', () => {
-      
+
       if(this.completed) {
         this.destroy();
         new Home();
@@ -34,7 +34,7 @@ export class Tutorial extends Screen {
       else {
         this.next();
       };
-      
+
     });
 
     closeButton.addEventListener('click', () => {
@@ -67,7 +67,7 @@ export class Tutorial extends Screen {
         this.puzzle.tiles[index][action]();
       });
     });
-    
+
     this.puzzle.updateStates();
 
     if(this.tutorial === this.prompts.length-1 && this.step === this.prompts[this.tutorial][1].length-2) {
@@ -85,7 +85,7 @@ export class Tutorial extends Screen {
     };
 
     this.showPrompt();
-    
+
     return this;
 
   };
@@ -99,7 +99,7 @@ export class Tutorial extends Screen {
 
   };
   removeOld() {
-    
+
     if(this.puzzle) {
       this.puzzle.destroy();
     };
@@ -122,7 +122,7 @@ export class Tutorial extends Screen {
   tutorial = 0;
   prompts = [
     [
-      0, 
+      0,
       [
         ["Knobs is a game of logic. If you're familiar with 'Star Battle' or 'Two Not Touch' from NYT Games, this should be easy enough. Otherwise, let's get you up to speed...", []],
         ["The aim of the game is to twist (disable) knobs until only one of each colour remain active...", []],
@@ -191,7 +191,7 @@ export class Tutorial extends Screen {
       ]
     ],
     [
-      48, 
+      48,
       [
         ["Okay. Let's cover a couple more techniqies...", [
           ['highlight', [15]]

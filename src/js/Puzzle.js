@@ -1,4 +1,4 @@
-import { makeEven, limit, isTiny, createNode, shuffle } from '@jamesrock/rockjs';
+import { makeEven, limit, isTiny, makeNode, shuffle } from '@jamesrock/rockjs';
 import { puzzles } from './puzzles';
 import { storage, colors } from './utils';
 
@@ -41,7 +41,7 @@ export class Puzzle {
 	};
 	render() {
 
-		const puzzle = this.node = createNode('div', 'puzzle');
+		const puzzle = this.node = makeNode('div', 'puzzle');
 		const gap = isTiny() ? 5 : 10;
 		const size = makeEven(limit(Math.round((window.innerWidth - (gap * ((this.size - 1) + 4))) / this.size), 60));
 		let knobs = [];
@@ -50,7 +50,7 @@ export class Puzzle {
 
 		this.tiles.forEach((tile, index) => {
 
-			const knob = createNode('div', 'knob');
+			const knob = makeNode('div', 'knob');
 			knob.style.top = `${(tile.y * size) + (gap * tile.y)}px`;
 			knob.style.left = `${(tile.x * size) + (gap * tile.x)}px`;
 			knob.style.width = `${size}px`;
@@ -105,7 +105,7 @@ export class Puzzle {
 
 	};
 	updateStates() {
-		
+
 		this.tiles.forEach((tile, index) => {
 			this.knobs[index].dataset.state = tile.state;
 			this.knobs[index].dataset.animation = tile.animation;
@@ -116,7 +116,7 @@ export class Puzzle {
 
 	};
 	checkForWin() {
-		
+
 		const off = this.tiles.filter((tile) => {
 			return tile.state==='off'&&tile.value===0;
 		}).length;
@@ -135,7 +135,7 @@ export class Puzzle {
 
 	};
 	destroy() {
-		
+
 		this.node.parentNode.removeChild(this.node);
 		return this;
 
@@ -150,7 +150,7 @@ export class Puzzle {
 
 	};
 	autoComplete() {
-		
+
 		this.tiles.forEach((tile) => {
 			if(tile.value===1) {
 				tile.enable();
@@ -168,7 +168,7 @@ export class Puzzle {
 	runAnimation(a = 0, speed = 55) {
 
 		this.hide();
-		
+
 		const animation = this.animations[a];
 
 		setTimeout(() => {
@@ -203,7 +203,7 @@ export class Puzzle {
 		});
 	};
 	show() {
-		
+
 		this.tiles.forEach((tile) => {
 			tile.show();
 		});
@@ -212,7 +212,7 @@ export class Puzzle {
 
 	};
 	hide() {
-		
+
 		this.tiles.forEach((tile) => {
 			tile.hide();
 		});
@@ -283,47 +283,47 @@ class PuzzleTile {
 		else {
 			this.state = 'on';
 		};
-		
+
 		return this;
 
 	};
 	disable() {
-		
+
 		this.state = 'off';
 		return this;
 
 	};
 	enable() {
-		
+
 		this.state = 'on';
 		return this;
 
 	};
 	highlight() {
-		
+
 		this.state = 'highlight';
 		return this;
 
 	};
 	unhighlight() {
-		
+
 		return this.enable();
 
 	};
 	clearAnimation() {
-		
+
 		this.animation = 'linear';
 		return this;
 
 	};
 	show() {
-		
+
 		this.visible = true;
 		return this;
 
 	};
 	hide() {
-		
+
 		this.visible = false;
 		return this;
 

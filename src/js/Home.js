@@ -1,4 +1,4 @@
-import { createNode, formatTime, formatNumber } from '@jamesrock/rockjs';
+import { makeNode, formatTime, formatNumber } from '@jamesrock/rockjs';
 import { Play } from './Play';
 import { Tutorial } from './Tutorial';
 import { Screen } from './Screen';
@@ -8,14 +8,14 @@ import { store } from './Store';
 
 export class Home extends Screen {
   constructor() {
-    
+
     super();
     this.render();
 
   };
   render() {
 
-    this.node = createNode('div', 'home-screen');
+    this.node = makeNode('div', 'home-screen');
 
     this.node.innerHTML = `\
       <h1>knobs</h1>\
@@ -32,7 +32,7 @@ export class Home extends Screen {
       </div>\
     `;
 
-    const prompt = this.prompt = createNode('div', 'prompt');
+    const prompt = this.prompt = makeNode('div', 'prompt');
     prompt.classList.add('pro');
     prompt.dataset.active = false;
 
@@ -45,7 +45,7 @@ export class Home extends Screen {
 
           }
           else if(this.stats.game<puzzles.length) {
-            
+
             this.destroy();
             new Play();
 
@@ -53,7 +53,7 @@ export class Home extends Screen {
           else {
 
             this.showPrompt(
-              "Harry!<br />I've reached the top!", 
+              "Harry!<br />I've reached the top!",
               `You've only gone and completed ALL ${puzzles.length} puzzles! 500 new puzzles are dropped every month, on or around the 1st. Check the App Store for any updates.`,
               [
                 ['close', 'continue']
@@ -83,7 +83,7 @@ export class Home extends Screen {
             storage.set('pro', true);
 
             this.showPrompt(
-              'amazing!', 
+              'amazing!',
               "Thank you SO much! Your small contribution makes a BIG difference. Those levels don't program themselves, after all!",
               [
                 ['continue', 'continue']
@@ -91,9 +91,9 @@ export class Home extends Screen {
             );
 
           }).catch((error) => {
-            
+
             this.showPrompt(
-              'purchase failed.', 
+              'purchase failed.',
               `${error.message}. Please try again.`,
               [
                 ['continue', 'continue']
@@ -110,7 +110,7 @@ export class Home extends Screen {
 
   };
   showPrompt(heading = '{heading}', body = '{body}', actions = []) {
-    
+
     this.prompt.innerHTML = `\
       <div class="prompt-head">\
         <h2>${heading}</h2>\
@@ -126,7 +126,7 @@ export class Home extends Screen {
     `;
 
     this.prompt.dataset.active = true;
-    
+
   };
   restore(verbose = false) {
 
@@ -144,10 +144,10 @@ export class Home extends Screen {
           if(storage.get('pro')) {
 
             if(verbose) {
-              
+
               this.showPrompt(
-                'fully restored!', 
-                'Thanks once again! You\'re all set.', 
+                'fully restored!',
+                'Thanks once again! You\'re all set.',
                 [
                   ['continue', 'continue']
                 ]
@@ -155,7 +155,7 @@ export class Home extends Screen {
 
             }
             else {
-              
+
               this.destroy();
               new Play();
 
@@ -167,7 +167,7 @@ export class Home extends Screen {
             store.getProduct().then(({product}) => {
 
               this.showPrompt(
-                'loving knobs?!', 
+                'loving knobs?!',
                 `Please consider making a small one-off contribution of ${product.priceString} to unlock all ${formatNumber(puzzles.length)} puzzles — plus 500 new puzzles every month!`,
                 [
                   ['no thanks!', 'cancel'],
@@ -183,8 +183,8 @@ export class Home extends Screen {
 
           if(verbose) {
             this.showPrompt(
-              'unable to restore purchase.', 
-              'Your purchase cannot be verified at this time. Please try again and/or check your original transaction was successful.', 
+              'unable to restore purchase.',
+              'Your purchase cannot be verified at this time. Please try again and/or check your original transaction was successful.',
               [
                 ['continue', 'continue']
               ]
@@ -197,7 +197,7 @@ export class Home extends Screen {
       else {
 
         this.showPrompt(
-          'download the app!', 
+          'download the app!',
           `Only ${this.limit} free games are supported online. Please download the knobs app to play all levels.`,
           [
             ['close', 'continue']
@@ -206,7 +206,7 @@ export class Home extends Screen {
 
       };
     });
-    
+
   };
   limit = 10;
 };

@@ -1,19 +1,19 @@
-import { createNode } from '@jamesrock/rockjs';
+import { makeNode } from '@jamesrock/rockjs';
 import { Screen } from './Screen';
 
 export class Icon extends Screen {
   constructor() {
-    
+
     super();
     this.render();
 
   };
   render() {
 
-    this.node = createNode('div', 'icon-screen');
+    this.node = makeNode('div', 'icon-screen');
     this.target.appendChild(this.node);
 
-    const icon = createNode('div', 'icon');
+    const icon = makeNode('div', 'icon');
     const gap = 8;
     const size = 42;
     const bob = (size * 2) + (gap);
@@ -32,7 +32,7 @@ export class Icon extends Screen {
 
     this.knobs.forEach((tile, index) => {
 
-      const knob = createNode('div', 'knob');
+      const knob = makeNode('div', 'knob');
       knob.style.top = `${(tile.y * size) + (gap * tile.y)}px`;
       knob.style.left = `${(tile.x * size) + (gap * tile.x)}px`;
       knob.style.width = `${size}px`;

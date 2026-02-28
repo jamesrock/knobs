@@ -1,27 +1,27 @@
-import { createNode } from '@jamesrock/rockjs';
+import { makeNode } from '@jamesrock/rockjs';
 import { Screen } from './Screen';
 import { Puzzle } from './Puzzle';
 import { puzzles } from './puzzles';
 
 export class Checker extends Screen {
   constructor() {
-    
+
     super();
     this.render();
 
   };
   render() {
 
-    this.node = createNode('div', 'checker-screen');
+    this.node = makeNode('div', 'checker-screen');
     this.target.appendChild(this.node);
 
     document.body.classList.add('auto-height');
     document.documentElement.classList.add('auto-overflow');
 
     puzzles.forEach((puzzle, index) => {
-      const holder = createNode('div', 'holder');
-      const holderHead = createNode('div', 'holder-head');
-      const holderBody = createNode('div', 'holder-body');
+      const holder = makeNode('div', 'holder');
+      const holderHead = makeNode('div', 'holder-head');
+      const holderBody = makeNode('div', 'holder-body');
       holder.appendChild(holderHead);
       holder.appendChild(holderBody);
 
@@ -45,7 +45,7 @@ export class Checker extends Screen {
       else {
         this.volume ++;
       };
-      
+
     });
 
   };

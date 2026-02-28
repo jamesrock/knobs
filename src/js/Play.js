@@ -1,4 +1,4 @@
-import { createNode, formatTime } from '@jamesrock/rockjs';
+import { makeNode, formatTime } from '@jamesrock/rockjs';
 import { Puzzle } from './Puzzle';
 import { Home } from './Home';
 import { Screen } from './Screen';
@@ -7,14 +7,14 @@ import { storage } from './utils';
 
 export class Play extends Screen {
   constructor() {
-    
+
     super();
     this.render();
 
   };
   render() {
 
-    this.node = createNode('div', 'play-screen');
+    this.node = makeNode('div', 'play-screen');
 
     this.node.innerHTML = `\
       <h1>knobs</h1>\
@@ -40,7 +40,7 @@ export class Play extends Screen {
       };
     });
 
-    const solvedNode = this.solvedNode = createNode('div', 'solved');
+    const solvedNode = this.solvedNode = makeNode('div', 'solved');
     solvedNode.dataset.action = 'new';
 
     this.node.appendChild(solvedNode);
@@ -50,7 +50,7 @@ export class Play extends Screen {
 
   };
   removeOld() {
-    
+
     if(this.puzzle) {
       this.puzzle.destroy();
       this.puzzle = null;
@@ -83,7 +83,7 @@ export class Play extends Screen {
 
   };
   solvedHandler() {
-    
+
     const stats = storage.get('stats');
     const time = (Date.now() - this.start);
     this.solvedNode.innerHTML = `\
