@@ -97,12 +97,6 @@ export class Builder extends Screen {
       dropZone.style.backgroundPosition = `calc(50% + ${positionX.value}px) calc(50% + ${positionY.value}px)`;
       dropZone.style.backgroundSize = `${backgroundSize.value}px auto`;
     };
-    const puzzleChangeHandler = () => {
-      this.reset();
-    };
-
-    this.data = makeArray(24, () => [makeArray(8*8, () => 0), makeArray(8*8, () => 0)]);
-    this.history = [];
 
     let knobs = [];
 
@@ -150,8 +144,12 @@ export class Builder extends Screen {
     positionX.addEventListener('input', positionChangeHandler);
     positionY.addEventListener('input', positionChangeHandler);
     backgroundSize.addEventListener('input', positionChangeHandler);
-    setSelect.addEventListener('input', puzzleChangeHandler);
-    puzzleSelect.addEventListener('input', puzzleChangeHandler);
+    setSelect.addEventListener('input', () => {
+      this.reset(true);
+    });
+    puzzleSelect.addEventListener('input', () => {
+      this.reset();
+    });
 
     space.addEventListener('input', () => {
       board.style.width = board.style.height = `${space.value * (this.looper.length-1)}px`;
@@ -220,7 +218,12 @@ export class Builder extends Screen {
     this.reset();
 
 	};
-  reset() {
+  reset(hard = false) {
+
+    if(hard) {
+      this.data = makeArray(24, () => [makeArray(8*8, () => 0), makeArray(8*8, () => 0)]);
+      this.history = [];
+    };
 
     this.starButtons.forEach((btn) => {
       btn.dataset.state = 'off';
@@ -303,5 +306,3 @@ export class Builder extends Screen {
   history = [];
   starCount = 0;
 };
-
-console.log(1269*5);
