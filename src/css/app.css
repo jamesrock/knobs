@@ -104,7 +104,8 @@ h3 {
 
 select,
 input,
-textarea {
+textarea,
+button {
   font-size: inherit;
   font-family: inherit;
 }
@@ -243,7 +244,7 @@ button,
     top: -120px;
     left: -120px;
 
-    &.good {
+    &[data-state="good"] {
       border-color: green;
     }
 

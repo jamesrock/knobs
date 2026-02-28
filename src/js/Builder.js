@@ -112,11 +112,11 @@ export class Builder extends Screen {
         const btn = makeNode('div', 'knob');
         btn.addEventListener('click', () => {
           if(this.box==='stars') {
-            this.data[this.puzzleSelect.value][0][btn.dataset.value] = 1;
+            this.data[this.puzzle][0][btn.dataset.value] = 1;
             btn.classList.add('star');
             this.starCount ++;
             if(this.starCount===8) {
-              nudge.classList.add('good');
+              this.setState('good');
             };
           }
           else {
@@ -144,19 +144,23 @@ export class Builder extends Screen {
     positionX.addEventListener('input', positionChangeHandler);
     positionY.addEventListener('input', positionChangeHandler);
     backgroundSize.addEventListener('input', positionChangeHandler);
-    setSelect.addEventListener('input', () => {
-      this.reset(true);
-    });
-    puzzleSelect.addEventListener('input', () => {
-      this.reset();
-    });
-
     space.addEventListener('input', () => {
       board.style.width = board.style.height = `${space.value * (this.looper.length-1)}px`;
     });
+
+    setSelect.addEventListener('input', () => {
+      this.reset(true);
+    });
+
+    puzzleSelect.addEventListener('input', () => {
+      this.setPuzzle(Number(puzzleSelect.value));
+      this.reset();
+    });
+
     modeSelect.addEventListener('input', () => {
       this.setBox(Number(modeSelect.value));
     });
+
     undoButton.addEventListener('click', () => {
       this.undo();
     });
@@ -178,6 +182,12 @@ export class Builder extends Screen {
 		});
 
     nudge.addEventListener('click', () => {
+
+      if(this.state==='good' && this.puzzle < 24) {
+        this.setPuzzle(this.puzzle + 1);
+        this.reset();
+        return;
+      };
 
       if(this.box < 7) {
         this.setBox(this.box + 1);
@@ -223,6 +233,7 @@ export class Builder extends Screen {
     if(hard) {
       this.data = makeArray(24, () => [makeArray(8*8, () => 0), makeArray(8*8, () => 0)]);
       this.history = [];
+      this.setPuzzle(0);
     };
 
     this.starButtons.forEach((btn) => {
@@ -231,9 +242,8 @@ export class Builder extends Screen {
     });
 
     this.setBox(0);
-
+    this.setState('awaiting');
     this.starCount = 0;
-    this.nudge.classList.remove('good');
 
     this.renderPuzzle();
     this.renderOutput();
@@ -249,13 +259,12 @@ export class Builder extends Screen {
   };
   renderPuzzle() {
 
-    // this.dropZone.style.backgroundPosition = `calc(50% + ${this.positions[this.puzzleSelect.value][1]}px) calc(50% + ${this.positions[this.puzzleSelect.value][2]}px)`;
     this.dropZone.style.backgroundImage = `url(/puzzles/${this.setSelect.value}-answers.png)`;
-    this.dropZone.style.backgroundPosition = `calc(50% + ${this.answerPositions[this.puzzleSelect.value][0]}px) calc(50% + ${this.answerPositions[this.puzzleSelect.value][1]}px)`;
+    this.dropZone.style.backgroundPosition = `calc(50% + ${this.answerPositions[this.puzzle][0]}px) calc(50% + ${this.answerPositions[this.puzzle][1]}px)`;
     this.dropZone.style.backgroundSize = `${this.backgroundSize.value}px auto`;
 
-    this.positionX.value = this.answerPositions[this.puzzleSelect.value][0];
-    this.positionY.value = this.answerPositions[this.puzzleSelect.value][1];
+    this.positionX.value = this.answerPositions[this.puzzle][0];
+    this.positionY.value = this.answerPositions[this.puzzle][1];
 
     return this;
 
@@ -270,7 +279,7 @@ export class Builder extends Screen {
   set(knob, value, force = false) {
 
     if(force || knob.dataset.state==='off') {
-      this.data[this.puzzleSelect.value][1][knob.dataset.value] = value;
+      this.data[this.puzzle][1][knob.dataset.value] = value;
       knob.dataset.box = value;
       knob.dataset.state = 'on';
     };
@@ -283,6 +292,20 @@ export class Builder extends Screen {
     this.box = box;
     this.modeSelect.value = this.box;
     this.node.setAttribute('data-box', this.box);
+    return this;
+
+  };
+  setState(state) {
+
+    this.state = state;
+    this.nudge.setAttribute('data-state', this.state);
+    return this;
+
+  };
+  setPuzzle(puzzle) {
+
+    this.puzzle = puzzle;
+    this.puzzleSelect.value = this.puzzle;
     return this;
 
   };
@@ -301,8 +324,5 @@ export class Builder extends Screen {
   answerPositions = positions;
   starButtons = [];
   box = 0;
-  stars = [];
-  map = [];
-  history = [];
   starCount = 0;
 };
