@@ -91,8 +91,8 @@ export class Builder extends Screen {
     const dropZone = this.dropZone = document.querySelector('body');
     const output = this.output = makeOutput();
     const size = (this.space * (this.looper.length - 1));
-    const undoButton = makeButton('UNDO');
-    const copyButon = makeButton('COPY');
+    const undoButton = makeButton('undo');
+    const copyButon = makeButton('copy');
     const positionChangeHandler = () => {
       dropZone.style.backgroundPosition = `calc(50% + ${positionX.value}px) calc(50% + ${positionY.value}px)`;
       dropZone.style.backgroundSize = `${backgroundSize.value}px auto`;
@@ -190,9 +190,9 @@ export class Builder extends Screen {
 
     copyButon.addEventListener('click', () => {
       navigator.clipboard.writeText(output.value);
-      copyButon.innerText = 'COPIED!';
+      copyButon.innerText = 'copied!';
       setTimeout(() => {
-        copyButon.innerText = 'COPY';
+        copyButon.innerText = 'copy';
       }, 2000);
     });
 
@@ -215,7 +215,7 @@ export class Builder extends Screen {
     this.target.append(outputs);
 
     this.setColors();
-    this.reset();
+    this.reset(true);
 
 	};
   reset(hard = false) {
