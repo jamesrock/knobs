@@ -378,6 +378,10 @@ button,
     border-radius: 100%;
   }
 
+  [data-box="stars"] & {
+    opacity: 0.5;
+  }
+
 }
 
 .puzzle {
@@ -481,10 +485,4 @@ button,
     display: none;
   }
 
-}
-
-.answers-overlay {
-  position: absolute;
-  inset: 0;
-  /*opacity: 0.5;*/
 }

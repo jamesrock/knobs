@@ -6,6 +6,7 @@ import {
   createOutput,
   createContainer,
   createSelect,
+  getLast,
   makeArray
 } from '@jamesrock/rockjs';
 import { Screen } from './Screen';
@@ -100,6 +101,9 @@ export class Builder extends Screen {
       this.reset();
     };
 
+    this.data = makeArray(24, () => [makeArray(8*8, () => 0), makeArray(8*8, () => 0)]);
+    this.history = [];
+
     let knobs = [];
 
     // positionX.step = 10;
@@ -114,7 +118,7 @@ export class Builder extends Screen {
         const btn = createNode('div', 'knob');
         btn.addEventListener('click', () => {
           if(this.box==='stars') {
-            this.stars[btn.dataset.value] = 1;
+            this.data[this.puzzleSelect.value][0][btn.dataset.value] = 1;
             btn.classList.add('star');
             this.starCount ++;
             if(this.starCount===8) {
@@ -153,7 +157,7 @@ export class Builder extends Screen {
       board.style.width = board.style.height = `${space.value * (this.looper.length-1)}px`;
     });
     modeSelect.addEventListener('input', () => {
-      this.box = modeSelect.value;
+      this.setBox(modeSelect.value);
     });
     undoButton.addEventListener('click', () => {
       this.undo();
@@ -177,13 +181,12 @@ export class Builder extends Screen {
 
     nudge.addEventListener('click', () => {
 
-      if(this.box<7) {
-        this.box ++;
+      if(this.box < 7) {
+        this.setBox(this.box + 1);
       }
       else {
-        this.box = 'stars';
+        this.setBox('stars');
       };
-      modeSelect.value = this.box;
 
     });
 
@@ -195,9 +198,9 @@ export class Builder extends Screen {
     inputs.append(setSelect);
     inputs.append(puzzleSelect);
     inputs.append(undoButton);
-    inputs.append(positionX);
-    inputs.append(positionY);
-    inputs.append(backgroundSize);
+    // inputs.append(positionX);
+    // inputs.append(positionY);
+    // inputs.append(backgroundSize);
     // inputs.append(space);
 
     outputs.append(output);
@@ -212,44 +215,17 @@ export class Builder extends Screen {
     this.reset();
 
 	};
-  reset(hard = false) {
-
-    this.stars = [
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0
-    ];
-    this.map = [
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0
-    ];
-    this.history = [];
+  reset() {
 
     this.starButtons.forEach((btn) => {
       btn.dataset.state = 'off';
       btn.classList.remove('star');
     });
 
-    this.box = 0;
-    this.modeSelect.value = this.box;
+    this.setBox(0);
 
     this.starCount = 0;
     this.nudge.classList.remove('good');
-
-    if(hard) {
-      this.puzzleSelect.value = 0;
-    };
 
     this.renderPuzzle();
     this.renderOutput();
@@ -258,9 +234,9 @@ export class Builder extends Screen {
   renderOutput(write = true) {
 
     if(write) {
-      this.history.push(JSON.stringify([this.stars, this.map]));
+      this.history.push(JSON.stringify(this.data));
     };
-    this.output.value = this.history[this.history.length-1];
+    this.output.value = getLast(this.history);
 
   };
   renderPuzzle() {
@@ -279,21 +255,26 @@ export class Builder extends Screen {
   undo() {
 
     this.history.pop();
-
-    const previous = JSON.parse(this.history[this.history.length-1]);
-    this.stars = previous[1];
-    this.map = previous[2];
+    this.data = JSON.parse(getLast(this.history));
     this.renderOutput(false);
 
   };
   set(knob, value, force = false) {
 
     if(force || knob.dataset.state==='off') {
-      this.map[knob.dataset.value] = value;
+      this.data[this.puzzleSelect.value][1][knob.dataset.value] = value;
       knob.dataset.box = value;
       knob.dataset.state = 'on';
     };
 
+    return this;
+
+  };
+  setBox(box) {
+
+    this.box = box;
+    this.modeSelect.value = this.box;
+    this.node.setAttribute('data-box', this.box);
     return this;
 
   };
