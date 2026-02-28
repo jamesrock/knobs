@@ -1,6 +1,6 @@
 {
   "appId": "me.jamesrock.knobs",
-  "appName": "knobs",
+  "appName": "Knobs",
   "webDir": "dist",
   "plugins": {
     "SplashScreen": {

@@ -1,12 +1,12 @@
 import {
   formatNumber,
-  createNode,
-  createButton,
-  createInput,
-  createOutput,
-  createContainer,
-  createSelect,
   getLast,
+  makeNode,
+  makeButton,
+  makeInput,
+  makeOutput,
+  makeContainer,
+  makeSelect,
   makeArray
 } from '@jamesrock/rockjs';
 import { Screen } from './Screen';
@@ -76,26 +76,26 @@ export class Builder extends Screen {
 	};
 	render() {
 
-    const board = this.node = createContainer('builder');
-    const nudge = this.nudge = createContainer('nudge');
-    const status = this.status = createNode('h1', 'status');
-    const inputs = createContainer('inputs');
-    const outputs = createContainer('outputs');
-    const modeSelect = this.modeSelect = createSelect(this.modes);
-    const setSelect = this.setSelect = createSelect(sets.map((value) => [`#${value}`, value]));
-    const puzzleSelect = this.puzzleSelect = createSelect(makeArray(24).map((item, index) => [`#${index+1}`, index]));
-    const positionX = this.positionX = createInput(this.answerPositions[0][0]);
-    const positionY = this.positionY = createInput(this.answerPositions[0][1]);
-    const backgroundSize = this.backgroundSize = createInput(500);
-    const space = createInput(this.space);
+    const board = this.node = makeContainer('builder');
+    const nudge = this.nudge = makeContainer('nudge');
+    const status = this.status = makeNode('h1', 'status');
+    const inputs = makeContainer('inputs');
+    const outputs = makeContainer('outputs');
+    const modeSelect = this.modeSelect = makeSelect(this.modes);
+    const setSelect = this.setSelect = makeSelect(sets.map((value) => [`#${value}`, value]));
+    const puzzleSelect = this.puzzleSelect = makeSelect(makeArray(24).map((item, index) => [`#${index+1}`, index]));
+    const positionX = this.positionX = makeInput(this.answerPositions[0][0]);
+    const positionY = this.positionY = makeInput(this.answerPositions[0][1]);
+    const backgroundSize = this.backgroundSize = makeInput(6345);
+    const space = makeInput(this.space);
     const dropZone = this.dropZone = document.querySelector('body');
-    const output = this.output = createOutput();
-    const undoButton = createButton('undo');
-    const size = (this.space * (this.looper.length-1));
+    const output = this.output = makeOutput();
+    const size = (this.space * (this.looper.length - 1));
+    const undoButton = makeButton('UNDO');
+    const copyButon = makeButton('COPY');
     const positionChangeHandler = () => {
-      // dropZone.style.backgroundPosition = `calc(50% + ${positionX.value}px) calc(50% + ${positionY.value}px)`;
       dropZone.style.backgroundPosition = `calc(50% + ${positionX.value}px) calc(50% + ${positionY.value}px)`;
-      dropZone.style.backgroundSize = `${backgroundSize.value}% auto`;
+      dropZone.style.backgroundSize = `${backgroundSize.value}px auto`;
     };
     const puzzleChangeHandler = () => {
       this.reset();
@@ -106,8 +106,8 @@ export class Builder extends Screen {
 
     let knobs = [];
 
-    // positionX.step = 10;
-    // positionY.step = 10;
+    positionX.step = 10;
+    positionY.step = 10;
     backgroundSize.step = 10;
 
     board.style.width = board.style.height = `${size}px`;
@@ -115,7 +115,7 @@ export class Builder extends Screen {
 
     this.starLooper.forEach((y) => {
       this.starLooper.forEach((x) => {
-        const btn = createNode('div', 'knob');
+        const btn = makeNode('div', 'knob');
         btn.addEventListener('click', () => {
           if(this.box==='stars') {
             this.data[this.puzzleSelect.value][0][btn.dataset.value] = 1;
@@ -157,7 +157,7 @@ export class Builder extends Screen {
       board.style.width = board.style.height = `${space.value * (this.looper.length-1)}px`;
     });
     modeSelect.addEventListener('input', () => {
-      this.setBox(modeSelect.value);
+      this.setBox(Number(modeSelect.value));
     });
     undoButton.addEventListener('click', () => {
       this.undo();
@@ -190,14 +190,19 @@ export class Builder extends Screen {
 
     });
 
-    output.addEventListener('focus', () => {
+    copyButon.addEventListener('click', () => {
       navigator.clipboard.writeText(output.value);
+      copyButon.innerText = 'COPIED!';
+      setTimeout(() => {
+        copyButon.innerText = 'COPY';
+      }, 2000);
     });
 
     inputs.append(modeSelect);
     inputs.append(setSelect);
     inputs.append(puzzleSelect);
     inputs.append(undoButton);
+    inputs.append(copyButon);
     // inputs.append(positionX);
     // inputs.append(positionY);
     // inputs.append(backgroundSize);
@@ -244,7 +249,7 @@ export class Builder extends Screen {
     // this.dropZone.style.backgroundPosition = `calc(50% + ${this.positions[this.puzzleSelect.value][1]}px) calc(50% + ${this.positions[this.puzzleSelect.value][2]}px)`;
     this.dropZone.style.backgroundImage = `url(/puzzles/${this.setSelect.value}-answers.png)`;
     this.dropZone.style.backgroundPosition = `calc(50% + ${this.answerPositions[this.puzzleSelect.value][0]}px) calc(50% + ${this.answerPositions[this.puzzleSelect.value][1]}px)`;
-    this.dropZone.style.backgroundSize = `${this.backgroundSize.value}% auto`;
+    this.dropZone.style.backgroundSize = `${this.backgroundSize.value}px auto`;
 
     this.positionX.value = this.answerPositions[this.puzzleSelect.value][0];
     this.positionY.value = this.answerPositions[this.puzzleSelect.value][1];
@@ -298,3 +303,5 @@ export class Builder extends Screen {
   history = [];
   starCount = 0;
 };
+
+console.log(1269*5);

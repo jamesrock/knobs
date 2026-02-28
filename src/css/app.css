@@ -104,8 +104,10 @@ h3 {
 
 select,
 input,
-textarea {
+textarea,
+button {
   font-size: inherit;
+  font-family: inherit;
 }
 
 input {
@@ -118,6 +120,7 @@ textarea {
   left: 0;
   right: 0;
   border: 0;
+  font-family: monospace;
 }
 
 button,
@@ -265,6 +268,12 @@ button,
     display: flex;
     gap: 5px;
     position: relative;
+  }
+
+  select,
+  button {
+    padding: 0 10px;
+    font-weight: inherit;
   }
 
 }
