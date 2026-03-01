@@ -15,7 +15,7 @@ import { Screen } from './Screen';
 import { puzzles } from './puzzles';
 import { colors } from './utils';
 
-const START = 44;
+const START = 62;
 const END = 70;
 const COUNT = 24;
 
@@ -27,7 +27,7 @@ const xValues = [
 ];
 
 const yValues = [
-  1820,
+  1820, // 1894
   890,
   -37,
   -966,
@@ -64,7 +64,7 @@ const positions = [
   [1, 6],
   [2, 6],
   [3, 6]
-].map(([x, y]) => [xValues[x], yValues[y] + 12]);
+].map(([x, y]) => [xValues[x] - 384, yValues[y] + 74]);
 
 const sets = makeArray((END + 1) - START).map((index) => {
   return START + index;
@@ -111,9 +111,9 @@ export class Builder extends Screen {
 
     let knobs = [];
 
-    positionX.step = 10;
-    positionY.step = 10;
-    backgroundSize.step = 10;
+    // positionX.step = 10;
+    // positionY.step = 10;
+    // backgroundSize.step = 10;
 
     board.style.width = board.style.height = `${size}px`;
     nudge.style.width = nudge.style.height = `${size}px`;
@@ -337,3 +337,6 @@ export class Builder extends Screen {
   box = 0;
   starCount = 0;
 };
+
+console.log(1950-1566);
+console.log(1894-1820);
