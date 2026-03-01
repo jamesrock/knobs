@@ -337,6 +337,3 @@ export class Builder extends Screen {
   box = 0;
   starCount = 0;
 };
-
-console.log(1950-1566);
-console.log(1894-1820);

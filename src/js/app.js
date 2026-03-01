@@ -9,7 +9,7 @@ import { storage } from './utils';
 setDocumentHeight();
 
 const stats = storage.get('stats');
-const mode = 'build'; // 'check', 'icon', 'build', 'play'
+const mode = 'play'; // 'check', 'icon', 'build', 'play'
 
 const setStats = window.resetStats = () => {
   storage.set('stats', {
@@ -35,7 +35,7 @@ const screens = {
     new Checker();
   },
   icon: () => {
-    new Icon();  
+    new Icon();
   }
 };
 
