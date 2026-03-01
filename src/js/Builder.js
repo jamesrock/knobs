@@ -70,6 +70,14 @@ const sets = makeArray((END + 1) - START).map((index) => {
   return START + index;
 });
 
+const format = (items) => {
+  const out = [];
+  items.forEach((item) => {
+    out.push(JSON.stringify(item));
+  });
+  return out.join(',\n');
+};
+
 export class Builder extends Screen {
 	constructor() {
 
@@ -202,7 +210,7 @@ export class Builder extends Screen {
     });
 
     copyButon.addEventListener('click', () => {
-      navigator.clipboard.writeText(output.value);
+      navigator.clipboard.writeText(format(this.data));
       copyButon.innerText = 'copied!';
       setTimeout(() => {
         copyButon.innerText = 'copy';
